@@ -7,6 +7,7 @@ package com.basp.trabajo_al_minuto.service.entity;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -41,7 +42,7 @@ public class OpcionPlantilla implements Serializable {
     @Column(name = "correcta")
     private Boolean correcta;
     @JoinColumn(name = "pregunta_plantilla_pregunta_id", referencedColumnName = "pregunta_id")
-    @ManyToOne(optional = false)
+    @ManyToOne(cascade = CascadeType.ALL, optional = false)
     private PreguntaPlantilla preguntaPlantillaPreguntaId;
 
     public OpcionPlantilla() {
