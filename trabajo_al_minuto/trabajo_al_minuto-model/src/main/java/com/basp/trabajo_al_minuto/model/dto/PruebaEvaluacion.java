@@ -5,13 +5,16 @@
  */
 package com.basp.trabajo_al_minuto.model.dto;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  *
  * @author BASP
  */
-public class PruebaEvaluacion {
+public class PruebaEvaluacion  implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private Long id;
     private String nombre;

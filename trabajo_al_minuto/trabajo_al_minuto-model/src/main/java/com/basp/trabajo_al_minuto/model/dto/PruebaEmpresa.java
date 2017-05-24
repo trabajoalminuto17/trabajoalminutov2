@@ -5,6 +5,7 @@
  */
 package com.basp.trabajo_al_minuto.model.dto;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -12,7 +13,9 @@ import java.util.List;
  *
  * @author BASP
  */
-public class PruebaEmpresa {
+public class PruebaEmpresa implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private Long id;
     private String nombre;
@@ -79,7 +82,7 @@ public class PruebaEmpresa {
     public void setPreguntas(List<PreguntaEmpresa> preguntas) {
         this.preguntas = preguntas;
     }
-    
+
     public Boolean getEstado() {
         return estado;
     }
