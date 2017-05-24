@@ -1,0 +1,356 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                template="../../resources/template/main.xhtml">
+
+    <ui:define name="head">
+        <script type="text/javascript">
+            function skinChart() {
+                this.cfg.shadow = false;
+                this.cfg.seriesColors = ['#71CC8D', '#33AFDE', '#F7941E'];
+                this.cfg.grid = {
+                    background: '#EDF3F6',
+                    borderColor: '#D9E3E8',
+                    gridLineColor: '#D9E3E8',
+                    shadow: false
+                };
+                this.cfg.axesDefaults = {
+                    rendererOptions: {
+                        textColor: '#778D9B'
+                    }
+                };
+                this.cfg.seriesDefaults = {
+                    shadow: false,
+                    markerOptions: {
+                        shadow: false
+                    }
+                }
+            }
+
+            function skinPie() {
+                this.cfg.seriesColors = ['#dae8ef', '#27aae1', '#33ccff', '#9fadb5'];
+                this.cfg.grid = {
+                    background: '#ffffff',
+                    borderColor: '#eaeaea',
+                    gridLineColor: '#e5ebf0',
+                    shadow: false,
+                    borderWidth: 0
+                };
+                this.cfg.seriesDefaults.shadow = false;
+            }
+        </script>
+        <style type="text/css">
+            .jqplot-target, .jqplot-axis {
+                color: #778D9B;
+            }
+        </style>
+    </ui:define>
+
+    <ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                    xmlns:h="http://java.sun.com/jsf/html"
+                    xmlns:f="http://java.sun.com/jsf/core"
+                    xmlns:ui="http://java.sun.com/jsf/facelets"
+                    xmlns:p="http://primefaces.org/ui"
+                    xmlns:pe="http://primefaces.org/ui/extensions"
+                    template="../../resources/template/main.xhtml">
+
+        <ui:define name="head">
+            <script type="text/javascript">
+                function skinChart() {
+                    this.cfg.shadow = false;
+                    this.cfg.seriesColors = ['#71CC8D', '#33AFDE', '#F7941E'];
+                    this.cfg.grid = {
+                        background: '#EDF3F6',
+                        borderColor: '#D9E3E8',
+                        gridLineColor: '#D9E3E8',
+                        shadow: false
+                    };
+                    this.cfg.axesDefaults = {
+                        rendererOptions: {
+                            textColor: '#778D9B'
+                        }
+                    };
+                    this.cfg.seriesDefaults = {
+                        shadow: false,
+                        markerOptions: {
+                            shadow: false
+                        }
+                    }
+                }
+
+                function skinPie() {
+                    this.cfg.seriesColors = ['#dae8ef', '#27aae1', '#33ccff', '#9fadb5'];
+                    this.cfg.grid = {
+                        background: '#ffffff',
+                        borderColor: '#eaeaea',
+                        gridLineColor: '#e5ebf0',
+                        shadow: false,
+                        borderWidth: 0
+                    };
+                    this.cfg.seriesDefaults.shadow = false;
+                }
+            </script>
+            <style type="text/css">
+                .jqplot-target, .jqplot-axis {
+                    color: #778D9B;
+                }
+            </style>
+        </ui:define>
+
+        <ui:define name="content">
+            <h:panelGroup id="pg_citacion">
+                <div class="Container80 Responsive MarTop20" style="margin-left: 10%">
+                    <div class="ContainerIndent"> 
+                        <h4 class="Fs15 gray DispBlock FontLight">Información detallada de #{detallePostulacionView.ofertaSeleccionada.perfil.titulo}</h4>
+                        <h5 class="Fs13 gray DispBlock FontBold">A continuación se encuentra la información de su oferta.</h5>
+                        <div class="Seperator"></div>
+                        <div class="Container100 Responsive">
+                            <div class="Container50 Responsive MarTop10">
+                                <h4 class="Fs14 black  DispBlock black">Descripción</h4>
+                                <p:outputLabel styleClass="Fs14 black  DispBlock black" value="#{detallePostulacionView.ofertaSeleccionada.perfil.descripcion}"/>
+                                <div class="EmptyBox30"/>
+                                <h4 class="Fs14 black  DispBlock black">Requerimientos</h4>
+                                <p:outputLabel styleClass="Fs14 black  DispBlock black" value="#{detallePostulacionView.ofertaSeleccionada.perfil.requerimientos}"/>
+                                <div class="EmptyBox30"/>
+                                <h4 class="Fs14 black  DispBlock black">Estado</h4>
+                                <p:outputLabel styleClass="Fs14 black  DispBlock black" value="#{detallePostulacionView.usuarioHasOfertaSeleccionada.estado.valor}"/>
+                            </div>
+                            <div class="Container50 Responsive MarTop10">
+                                <h4 class="Fs14 black  DispBlock black">Fecha Expiración</h4>
+                                <p:outputLabel styleClass="Fs14 black  DispBlock black" value="#{detallePostulacionView.ofertaSeleccionada.fechaExpiracion}">
+                                    <f:convertDateTime pattern="MMMM, dd yyyy" locale="es" />
+                                </p:outputLabel>
+                                <div class="EmptyBox30"/>
+                                <h4 class="Fs14 black DispBlock black">Area</h4>
+                                <p:outputLabel styleClass="Fs14 black  DispBlock black" value="#{detallePostulacionView.ofertaSeleccionada.perfil.area.valor}"/>
+                                <div class="EmptyBox30"/>
+                                <h4 class="Fs14 black DispBlock black">Salario</h4>
+                                <p:outputLabel styleClass="Fs14 black  DispBlock black" value="$ #{detallePostulacionView.ofertaSeleccionada.perfil.salario}"/>
+                            </div>
+                            <div class="EmptyBox80"/>
+                            <h4 class="Fs15 gray DispBlock FontLight">Información del candidato</h4>
+                            <h5 class="Fs13 gray DispBlock FontBold">A continuación se encuentra la información del candidato.</h5>
+                            <div class="Seperator"></div>
+                            <div class="Container100 Responsive">
+                                <div class="Container33 Responsive MarTop10">
+                                    <h4 class="Fs14 black  DispBlock black">Nombre</h4>
+                                    <p:outputLabel styleClass="Fs14 black  DispBlock black" value="#{detallePostulacionView.usuarioHasOfertaSeleccionada.usuarioUsuarioId.persona.nombre}"/>
+                                    <div class="EmptyBox30"/>
+                                    <h4 class="Fs14 black  DispBlock black">Documento</h4>
+                                    <p:outputLabel styleClass="Fs14 black  DispBlock black" value="#{detallePostulacionView.usuarioHasOfertaSeleccionada.usuarioUsuarioId.persona.documento}"/>
+                                    <div class="EmptyBox30"/>
+                                    <h4 class="Fs14 black  DispBlock black">Edad</h4>
+                                    <p:outputLabel styleClass="Fs14 black  DispBlock black" value="#{detallePostulacionView.usuarioHasOfertaSeleccionada.usuarioUsuarioId.persona.edad}"/>
+                                    <div class="EmptyBox30"/>
+                                    <h4 class="Fs14 black FontOpenSansRegular DispBlock black">Hoja de vida </h4>
+                                    <h:commandLink  class="Fs14 DispBlock blue Underline" immediate="true"
+                                                    actionListener="#{detallePostulacionView.descargarHojaDeVida(detallePostulacionView.usuarioHasOfertaSeleccionada.usuarioUsuarioId.candidato.rutaHojaDeVida)}">
+                                        <i class="fa fa-download-blue"></i>
+                                        <p:fileDownload value="#{detallePostulacionView.streamedContent}"/>
+                                        Descargar la hoja de vida
+                                    </h:commandLink>   
+                                </div>
+                                <div class="Container33 Responsive MarTop10">
+                                    <h4 class="Fs14 black DispBlock black">Email</h4>
+                                    <p:outputLabel styleClass="Fs14 black  DispBlock black" value="#{detallePostulacionView.usuarioHasOfertaSeleccionada.usuarioUsuarioId.email}"/>
+                                    <div class="EmptyBox30"/>
+                                    <h4 class="Fs14 black  DispBlock black">Genero</h4>
+                                    <p:outputLabel styleClass="Fs14 black  DispBlock black" value="#{detallePostulacionView.usuarioHasOfertaSeleccionada.usuarioUsuarioId.persona.genero == 1 ? 'Hombre' : 'Mujer'}"/>
+                                    <div class="EmptyBox30"/>
+                                    <h4 class="Fs14 black FontOpenSansRegular DispBlock black">Teléfono celular </h4>
+                                    <p:outputLabel styleClass="Fs14 black  DispBlock black" value="#{detallePostulacionView.usuarioHasOfertaSeleccionada.usuarioUsuarioId.persona.celular}"/>
+                                </div>
+                                <div class="Container33 Responsive MarTop10">
+                                    <h4 class="Fs14 black DispBlock black">Aspiración Salarial</h4>
+                                    <p:outputLabel styleClass="Fs14 black  DispBlock black" value="#{detallePostulacionView.usuarioHasOfertaSeleccionada.usuarioUsuarioId.candidato.aspiracionSalarial}"/>
+                                    <div class="EmptyBox30"/>
+                                    <h4 class="Fs14 black  DispBlock black">Escolaridad</h4>
+                                    <p:outputLabel styleClass="Fs14 black  DispBlock black" value="#{detallePostulacionView.usuarioHasOfertaSeleccionada.usuarioUsuarioId.candidato.escolaridad}"/>
+                                    <div class="EmptyBox30"/>
+                                    <h4 class="Fs14 black FontOpenSansRegular DispBlock black">Teléfono fijo </h4>
+                                    <p:outputLabel styleClass="Fs14 black  DispBlock black" value="#{detallePostulacionView.usuarioHasOfertaSeleccionada.usuarioUsuarioId.persona.telefonoFijo}"/>
+
+                                </div>
+                            </div>     
+                        </div>
+                    </div>
+                    <div class="EmptyBox80" />
+                    <h:panelGroup rendered="#{detallePostulacionView.usuarioHasOfertaSeleccionada.estado.catalogoId == 8}">
+                        <h4 class="Fs15 gray DispBlock FontLight">Citación</h4>
+                        <h5 class="Fs13 gray DispBlock FontBold">Programe la citación con el candidato.</h5>
+                        <div class="Seperator"></div>
+                        <div class="Container100 Responsive">
+                            <div class="Container100 Responsive MarTop10">
+                                <h4 class="Fs14 black  DispBlock black">Lugar*</h4>
+                                <p:inputText value="#{detallePostulacionView.newCitacion.lugar}" required="true" styleClass="Wid60"
+                                             requiredMessage="Lugar no válido" validatorMessage="Lugar no válido" />
+                            </div>
+                            <div class="Container100 Responsive MarTop10">
+                                <h4 class="Fs14 black  DispBlock black">Detalles*</h4>
+                                <p:inputText value="#{detallePostulacionView.newCitacion.detalles}" required="true" styleClass="Wid60"
+                                             requiredMessage="Detalles no válidos" validatorMessage="Detalles no válidos" />
+                            </div>
+                            <div class="Container100 Responsive MarTop10">
+                                <h4 class="Fs14 black  DispBlock black">Fecha de citación*</h4>
+                                <p:calendar value="#{detallePostulacionView.newCitacion.fechaCitacion}" 
+                                            required="true"
+                                            pattern="MM/dd/yyyy HH:mm" 
+                                            requiredMessage="Fecha de citación no válida" 
+                                            mindate="#{detallePostulacionView.fechaActual}"
+                                            validatorMessage="Fecha de citación no válida" 
+                                            locale="es" >
+
+                                </p:calendar>
+                            </div>
+                        </div>
+                        <div class="EmptyBox50" />
+                        <p:commandButton styleClass="Fright RedButton" value="Regresar" action="/modulos/ofertas/detalle?faces-redirect=true"
+                                         icon="fa fa-mail-reply-all-white" immediate="true"/>
+                        <p:commandButton styleClass="Fright GreenButton" value="Rechazar" actionListener="#{detallePostulacionView.rechazarCitacion}"
+                                         icon="fa fa-close-white" update="pg_citacion" immediate="true" action="/modulos/ofertas/detalle?faces-redirect=true"/>
+                        <p:commandButton styleClass="Fright BlueButton" value="Citar" actionListener="#{detallePostulacionView.createCitacion}"
+                                         icon="fa fa-clock-o-white" update="pg_citacion"/>
+                    </h:panelGroup>
+                    <h:panelGroup rendered="#{detallePostulacionView.usuarioHasOfertaSeleccionada.estado.catalogoId == 11}">
+                        <h4 class="Fs15 gray DispBlock FontLight">Citación</h4>
+                        <h5 class="Fs13 gray DispBlock FontBold">Detalles de la citación</h5>
+                        <div class="Seperator"></div>
+                        <div class="Container100 Responsive">
+                            <div class="Container100 Responsive MarTop10">
+                                <h4 class="Fs14 black  DispBlock black">Lugar*</h4>
+                                <p:inputText value="#{detallePostulacionView.citacionSeleccionada.lugar}" required="true" styleClass="Wid60"
+                                             requiredMessage="Lugar no válido" validatorMessage="Lugar no válido" />
+                            </div>
+                            <div class="Container100 Responsive MarTop10">
+                                <h4 class="Fs14 black  DispBlock black">Detalles*</h4>
+                                <p:inputText value="#{detallePostulacionView.citacionSeleccionada.detalles}" required="true" styleClass="Wid60"
+                                             requiredMessage="Detalles no válidos" validatorMessage="Detalles no válidos" />
+                            </div>
+                            <div class="Container100 Responsive MarTop10">
+                                <h4 class="Fs14 black  DispBlock black">Fecha de citación*</h4>
+                                <p:calendar value="#{detallePostulacionView.citacionSeleccionada.fechaCitacion}"
+                                            pattern="MM/dd/yyyy HH:mm"
+                                            mindate="#{detallePostulacionView.fechaActual}"
+                                            locale="es" >
+
+                                </p:calendar>
+
+                            </div>
+                        </div>
+                        <div class="EmptyBox50" />
+
+                        <p:commandButton styleClass="Fright RedButton" value="Regresar" action="/modulos/ofertas/detalle?faces-redirect=true"  
+                                         icon="fa fa-mail-reply-all-white" immediate="true"/>
+                        <p:commandButton styleClass="Fright GreenButton" 
+                                         value="Activar Pruebas"
+                                         actionListener="#{detallePostulacionView.activarPrueba}" 
+                                         icon="fa fa-envelope-white">
+                            <p:confirm header="Mensaje de confirmaciòn" message="Desea activar las pruebas?" icon="ui-icon-alert" />
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                <p:commandButton value="Si" type="button" 
+                                                 styleClass="ui-confirmdialog-yes"
+                                                 icon="ui-icon-check" />
+                                <p:commandButton value="No" type="button" 
+                                                 styleClass="ui-confirmdialog-no"
+                                                 icon="ui-icon-close" />
+                            </p:confirmDialog>
+                        </p:commandButton>
+                        <p:commandButton styleClass="Fright BlueButton" 
+                                         value="Re-enviar"
+                                         actionListener="#{detallePostulacionView.updateCitacion}" 
+                                         update="pg_citacion"
+                                         icon="fa fa-envelope-white"/>
+                    </h:panelGroup>
+                    <h:panelGroup rendered="#{detallePostulacionView.usuarioHasOfertaSeleccionada.estado.catalogoId == 12}">
+                        <h4 class="Fs15 gray DispBlock FontLight">Citación</h4>
+                        <h5 class="Fs13 gray DispBlock FontBold">Programe la citación con el candidato.</h5>
+                        <div class="Seperator"></div>
+                        <div class="Container100 Responsive">
+                            <div class="Container100 Responsive MarTop10">
+                                <h4 class="Fs14 black  DispBlock black">Lugar</h4>
+                                <p:outputLabel styleClass="Fs14 black  DispBlock black" value="#{detallePostulacionView.citacionSeleccionada.lugar}" />
+                                <div class="EmptyBox10" />
+                            </div>
+                            <div class="Container100 Responsive MarTop10">
+                                <h4 class="Fs14 black  DispBlock black">Detalles</h4>
+                                <p:outputLabel styleClass="Fs14 black  DispBlock black" value="#{detallePostulacionView.citacionSeleccionada.detalles}" />
+                                <div class="EmptyBox10" />
+                            </div>
+                            <div class="Container100 Responsive MarTop10">
+                                <h4 class="Fs14 black  DispBlock black">Fecha de citación</h4>
+                                <p:outputLabel styleClass="Fs14 black  DispBlock black" value="#{detallePostulacionView.getFormatDate(detallePostulacionView.citacionSeleccionada.fechaCitacion)}" />   
+                            </div>
+                        </div>
+                        <div class="EmptyBox50" />
+                        <h4 class="Fs15 gray DispBlock FontBold">Evaluación</h4>
+                        <h5 class="Fs13 gray DispBlock FontLight">A continuación podrá ver el detalle de la evaluación</h5>
+                        <div class="Seperator"></div>
+                        <div class="Container100 Responsive">
+                            <div class="Container33 Responsive MarTop10">
+                                <h4 class="Fs14 black  DispBlock black">Fecha de presentación</h4>
+                                <p:outputLabel styleClass="Fs14 black  DispBlock black" value="#{detallePostulacionView.getFormatDate(detallePostulacionView.citacionSeleccionada.evaluacion.fechaFin)}" />
+                                <div class="EmptyBox10" />
+                            </div>
+                            <div class="Container33 Responsive MarTop10">
+                                <h4 class="Fs14 black  DispBlock black">Tiempo Empleado</h4>
+                                <p:outputLabel styleClass="Fs14 black  DispBlock black" value="#{detallePostulacionView.getFormatDateTime(detallePostulacionView.citacionSeleccionada.evaluacion.tiempoEmpleado)}" />
+                                <div class="EmptyBox10" />
+                            </div>
+                            <div class="Container33 Responsive MarTop10">
+                                <h4 class="Fs14 black  DispBlock black">Porcentaje conseguido</h4>
+                                <p:outputLabel styleClass="Fs14 black  DispBlock black" value="#{detallePostulacionView.citacionSeleccionada.evaluacion.porcentaje} %" />   
+                            </div>
+                        </div>
+                        <div class="Container100 Responsive">
+                            <div class="Container33 Responsive MarTop10">
+                                <h4 class="Fs14 black  DispBlock black">Porcentaje requerido</h4>
+                                <p:outputLabel styleClass="Fs14 black  DispBlock black" value="#{detallePostulacionView.porcentajeMinimoEvaluacion} %" />
+                            </div>
+                            <div class="Container33 Responsive MarTop10">
+                                <h4 class="Fs14 black  DispBlock black">Resultado</h4>
+                                <p:outputLabel styleClass="Fs14 DispBlock #{detallePostulacionView.aproboEvaluacion ? 'green' : 'red'}" value="#{detallePostulacionView.aproboEvaluacion ? 'APROBADO' : 'NO APROBADO'}" />
+                            </div>
+                        </div>
+                        <div class="EmptyBox20" />
+                        <h4 class="Fs15 gray DispBlock FontBold">Pruebas</h4>
+                        <h5 class="Fs13 gray DispBlock FontLight">Listado de pruebas presentadas.</h5>
+                        <div class="Seperator"></div>
+                        <div class="Container100 Responsive MarTop10">
+                            <p:dataTable id="dtpruebasperfil" var="pruebaperfil" value="#{detallePostulacionView.pruebas}"  widgetVar="wv_dtpruebasperfil"
+                                         reflow="true" styleClass="borderless"
+                                         selectionMode="single" selection="#{detallePostulacionView.preubaSeleccionada}" 
+                                         rowKey="#{pruebaperfil.perfilHasPruebaId}"
+                                         emptyMessage="No se encontraron pruebas!">
+                                <p:ajax event="rowSelect" listener="#{detallePostulacionView.onRowSelectVerPruebas}"/>
+                                <p:column headerText="Nombre" styleClass="Wid40 Fs14">
+                                    <h:outputText value="#{pruebaperfil.prueba.nombre}" styleClass="Fs14" />
+                                </p:column>
+                                <p:column headerText="Area" styleClass="Wid10 Fs14">
+                                    <h:outputText value="#{pruebaperfil.prueba.area.valor}" styleClass="Fs14"/>
+                                </p:column>
+                                <p:column headerText="Porcentaje Minimo" styleClass="Wid10 Fs14">
+                                    <h:outputText value="#{pruebaperfil.prueba.porcentajeMinimo} %" styleClass="Fs14"/>
+                                </p:column>
+                                <p:column headerText="Limite de tiempo" styleClass="Wid10 Fs14">
+                                    <h:outputText value="#{detalleOfertaView.getFormatDateTime(pruebaperfil.prueba.limiteTiempo)}" styleClass="Fs14"/>
+                                </p:column>
+                                <p:column headerText="Valor de la prueba" styleClass="Wid10 Fs14">
+                                    <h:outputText value="#{pruebaperfil.porcentaje} %" styleClass="Fs14"/>
+                                </p:column>
+                            </p:dataTable>
+                        </div>
+                        <div class="EmptyBox50" />
+                        <p:commandButton styleClass="Fright RedButton" value="Regresar" action="/modulos/ofertas/detalle?faces-redirect=true"
+                                         icon="fa fa-mail-reply-all-white" immediate="true"/>
+                    </h:panelGroup>
+                </div>
+                <div class="EmptyBox80" />
+            </h:panelGroup>
+        </ui:define>
+
+    </ui:composition>
+
+</ui:composition>

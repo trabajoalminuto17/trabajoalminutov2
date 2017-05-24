@@ -1,0 +1,92 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                template="../../resources/template/main.xhtml">
+
+    <ui:define name="head">
+        <script type="text/javascript">
+            function skinChart() {
+                this.cfg.shadow = false;
+                this.cfg.seriesColors = ['#71CC8D', '#33AFDE', '#F7941E'];
+                this.cfg.grid = {
+                    background: '#EDF3F6',
+                    borderColor: '#D9E3E8',
+                    gridLineColor: '#D9E3E8',
+                    shadow: false
+                };
+                this.cfg.axesDefaults = {
+                    rendererOptions: {
+                        textColor: '#778D9B'
+                    }
+                };
+                this.cfg.seriesDefaults = {
+                    shadow: false,
+                    markerOptions: {
+                        shadow: false
+                    }
+                }
+            }
+
+            function skinPie() {
+                this.cfg.seriesColors = ['#dae8ef', '#27aae1', '#33ccff', '#9fadb5'];
+                this.cfg.grid = {
+                    background: '#ffffff',
+                    borderColor: '#eaeaea',
+                    gridLineColor: '#e5ebf0',
+                    shadow: false,
+                    borderWidth: 0
+                };
+                this.cfg.seriesDefaults.shadow = false;
+            }
+        </script>
+        <style type="text/css">
+            .jqplot-target, .jqplot-axis {
+                color: #778D9B;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="content">
+        <div class="Container80 Responsive MarTop20" style="margin-left: 10%">
+            <div class="ContainerIndent"> 
+                <div class="Container80 Responsive">
+                    <h4 class="Fs15 gray DispBlock FontLight">Prueba #{evaluacionView.pruebaEvaluacion.nombre}</h4>
+                    <h5 class="Fs13 gray DispBlock FontBold">Resuelve la prueba.</h5>
+                </div>
+                <h:panelGroup id="pg_evauluacion">
+                    <div class="Container20 Responsive">
+                        <pe:timer
+                            timeout="#{evaluacionView.pruebaEvaluacion.tiempo}"  
+                            format="HH:mm:ss" 
+                            listener="#{evaluacionView.onTimeout}"/>  
+                    </div>
+                    <div class="Seperator"></div>
+                    <ui:repeat value="#{evaluacionView.pruebaEvaluacion.preguntas}" var="pregunta" varStatus="status_pregunta"> 
+                        <div class="EmptyBox20"/>
+                        <p:outputLabel styleClass="Fs14 DispBlock red FontBold" value="#{status_pregunta.index + 1} - #{pregunta.enunciado}"/>
+                        <div class="EmptyBox10"/>
+                        <div class="Container100 Responsive" style="margin-left: 5%">
+                            <ui:repeat value="#{pregunta.opciones}" var="opcion" varStatus="status_opcion">
+                                <div class="Container60 Responsive">
+                                    <p:outputLabel styleClass="Fs14 DispBlock black" value="#{opcion.enunciado}"/>
+                                </div>
+                                <div class="Container30 Responsive">
+                                    <p:selectBooleanCheckbox value="#{opcion.respuesta}"/>
+                                </div>
+                                <div class="EmptyBox20"/>
+                            </ui:repeat>
+                        </div>
+                    </ui:repeat>
+                </h:panelGroup>
+            </div>
+            <div class="EmptyBox50"/>
+            <p:commandButton styleClass="Fright GreenButton" value="Finalizar" actionListener="#{evaluacionView.finalizarPrueba}" 
+                             icon="fa fa-check-white"/>
+        </div>
+        <div class="EmptyBox80"/>
+    </ui:define>
+
+</ui:composition>

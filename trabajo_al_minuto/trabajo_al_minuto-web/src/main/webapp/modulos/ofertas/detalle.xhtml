@@ -1,0 +1,220 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                template="../../resources/template/main.xhtml">
+
+    <ui:define name="head">
+        <script type="text/javascript">
+            function skinChart() {
+                this.cfg.shadow = false;
+                this.cfg.seriesColors = ['#71CC8D', '#33AFDE', '#F7941E'];
+                this.cfg.grid = {
+                    background: '#EDF3F6',
+                    borderColor: '#D9E3E8',
+                    gridLineColor: '#D9E3E8',
+                    shadow: false
+                };
+                this.cfg.axesDefaults = {
+                    rendererOptions: {
+                        textColor: '#778D9B'
+                    }
+                };
+                this.cfg.seriesDefaults = {
+                    shadow: false,
+                    markerOptions: {
+                        shadow: false
+                    }
+                }
+            }
+
+            function skinPie() {
+                this.cfg.seriesColors = ['#dae8ef', '#27aae1', '#33ccff', '#9fadb5'];
+                this.cfg.grid = {
+                    background: '#ffffff',
+                    borderColor: '#eaeaea',
+                    gridLineColor: '#e5ebf0',
+                    shadow: false,
+                    borderWidth: 0
+                };
+                this.cfg.seriesDefaults.shadow = false;
+            }
+        </script>
+        <style type="text/css">
+            .jqplot-target, .jqplot-axis {
+                color: #778D9B;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="content">
+        <h:panelGroup id="pg_detalle_oferta" rendered="#{not empty detalleOfertaView.ofertaSeleccionada}">
+            <div class="Container80 Responsive MarTop20" style="margin-left: 10%">
+                <div class="ContainerIndent"> 
+                    <h4 class="Fs15 gray DispBlock FontLight">Información detallada de #{detalleOfertaView.ofertaSeleccionada.perfil.titulo}</h4>
+                    <h5 class="Fs13 gray DispBlock FontBold">A continuación se encuentra la información de su oferta.</h5>
+                    <div class="Seperator"></div>
+                    <div class="Container100 Responsive">
+                        <div class="Container50 Responsive MarTop10">
+                            <h4 class="Fs14 black  DispBlock black">Descripción</h4>
+                            <p:outputLabel styleClass="Fs14 black  DispBlock black" value="#{detalleOfertaView.ofertaSeleccionada.perfil.descripcion}"/>
+                            <div class="EmptyBox30"/>
+                            <h4 class="Fs14 black  DispBlock black">Requerimientos</h4>
+                            <p:outputLabel styleClass="Fs14 black  DispBlock black" value="#{detalleOfertaView.ofertaSeleccionada.perfil.requerimientos}"/>
+                            <h:panelGroup rendered="#{not empty detalleOfertaView.ofertAplicada}">
+                                <div class="EmptyBox30"/>
+                                <h4 class="Fs14 black  DispBlock black">Estado</h4>
+                                <p:outputLabel styleClass="Fs14 black  DispBlock black" value="#{detalleOfertaView.ofertAplicada.estado.valor}"/>
+                            </h:panelGroup>
+                        </div>
+                        <div class="Container50 Responsive MarTop10">
+                            <h4 class="Fs14 black  DispBlock black">Fecha Expiración</h4>
+                            <p:outputLabel styleClass="Fs14 black  DispBlock black" value="#{detalleOfertaView.ofertaSeleccionada.fechaExpiracion}">
+                                <f:convertDateTime pattern="MMMM, dd yyyy" locale="es" />
+                            </p:outputLabel>
+                            <div class="EmptyBox30"/>
+                            <h4 class="Fs14 black DispBlock black">Area</h4>
+                            <p:outputLabel styleClass="Fs14 black 
+                                           DispBlock black" value="#{detalleOfertaView.ofertaSeleccionada.perfil.area.valor}"/>
+                            <div class="EmptyBox30"/>
+                            <h4 class="Fs14 black DispBlock black">Salario</h4>
+                            <p:outputLabel styleClass="Fs14 black  DispBlock black"
+                                           value="$ #{detalleOfertaView.ofertaSeleccionada.perfil.salario}"/>
+                        </div>                            
+                        <h:panelGroup rendered="#{detalleOfertaView.usuariologin.rol.rolId eq 3}">
+                            <h:panelGroup rendered="#{not empty detalleOfertaView.ofertAplicada.citacion}">
+                                <div class="EmptyBox50"/>
+                                <h4 class="Fs18 black DispBlock FontBold">Citación</h4>
+                                <h5 class="Fs13 gray DispBlock FontBold">Información detallada de la citación.</h5>
+                                <div class="Seperator"></div>
+                                <div class="Container100 Responsive">
+                                    <div class="Container100 Responsive MarTop10">
+                                        <h4 class="Fs14 black  DispBlock black">Lugar</h4>
+                                        <p:outputLabel styleClass="Fs14 black  DispBlock" value="#{detalleOfertaView.ofertAplicada.citacion.lugar}"/>
+                                    </div>
+                                    <div class="EmptyBox30"/>
+                                    <div class="Container100 Responsive MarTop10">
+                                        <h4 class="Fs14 black  DispBlock black">Detalles</h4>
+                                        <p:outputLabel styleClass="Fs14 black  DispBlock" value="#{detalleOfertaView.ofertAplicada.citacion.detalles}"/>
+                                    </div>
+                                    <div class="EmptyBox30"/>
+                                    <div class="Container100 Responsive MarTop10">
+                                        <h4 class="Fs14 black  DispBlock black">Fecha de citación</h4>
+                                        <p:outputLabel styleClass="Fs14 red  DispBlock" value="#{detalleOfertaView.getFormatDate(detalleOfertaView.ofertAplicada.citacion.fechaCitacion)}"/>
+                                    </div>
+                                </div>
+                            </h:panelGroup>
+                            <div class="EmptyBox80"/>
+                            <p:commandButton styleClass="Fright RedButton" value="Regresar" action="/modulos/ofertas/ver?faces-redirect=true"  
+                                             icon="fa fa-mail-reply-all-white" immediate="true"/>
+                            <p:commandButton styleClass="Fright BlueButton" value="Aplicar oferta" actionListener="#{detalleOfertaView.aplicarOferta}"  
+                                             rendered="#{empty detalleOfertaView.ofertAplicada and 
+                                                         not empty detalleOfertaView.usuariologin.candidato.rutaHojaDeVida}" icon="fa fa-check-white" immediate="true"
+                                             update="pg_detalle_oferta"/>
+                            <h:panelGroup rendered="#{not empty detalleOfertaView.ofertAplicada}">
+                                <span class="Fs14 green">¡Has aplicado correctamente ha esta oferta!</span>
+                            </h:panelGroup>
+                            <h:panelGroup rendered="#{empty detalleOfertaView.usuariologin.candidato.rutaHojaDeVida}">
+                                <span class="Fs14 red">¡Debes cargar tu hoja de vida para poder aplicar a la oferta!</span>
+                            </h:panelGroup>
+                        </h:panelGroup>
+                        <h:panelGroup rendered="#{detalleOfertaView.usuariologin.rol.rolId ne 3}">
+                            <div class="EmptyBox80"/>
+                            <h4 class="Fs15 gray DispBlock FontBold">Candidatos</h4>
+                            <h5 class="Fs13 gray DispBlock FontLight">A continuación podrá ver el listado de los usuarios postulados.</h5>
+                            <div class="Seperator"></div>
+                            <div class="Container100 Responsive MarTop10">
+                                <p:dataTable id="dtofertasusuario" var="ofertausuario" value="#{detalleOfertaView.usuarioHasOfertaByOferta}"  widgetVar="wv_dtofertasusuario"
+                                             filteredValue="#{detalleOfertaView.usuarioHasOfertaFlitradas}" reflow="true" styleClass="borderless"
+                                             rows="10"
+                                             paginator="true"
+                                             paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                                             rowsPerPageTemplate="10,20"
+                                             paginatorPosition="bottom"
+                                             selectionMode="single" selection="#{detalleOfertaView.usuarioHasOfertaSeleccionada}" rowKey="#{ofertausuario.usuarioHasOfertaId}"
+                                             emptyMessage="No se encontraron candidatos!">
+                                    <f:facet name="header">
+                                        <p:toolbar style="border: none">
+                                            <f:facet name="left">
+                                                <p:outputPanel>
+                                                    <p:inputText id="globalFilter" onkeyup="PF('wv_dtofertasusuario').filter()" style="width: 250px; font-size: 12px" placeholder="Buscar"/>
+                                                </p:outputPanel>
+                                            </f:facet>
+                                        </p:toolbar>
+                                    </f:facet>
+                                    <p:ajax event="rowSelect" listener="#{detalleOfertaView.onRowSelectVerUsuarioHasOfertas}"/>
+                                    <p:column headerText="Nombre" filterBy="#{ofertausuario.usuarioUsuarioId.persona.nombre}"  filterStyle="display:none" styleClass="Wid40 Fs14">
+                                        <h:outputText value="#{ofertausuario.usuarioUsuarioId.persona.nombre}" styleClass="Fs14" />
+                                    </p:column>
+                                    <p:column headerText="Aspiración Salarial" filterBy="#{ofertausuario.usuarioUsuarioId.candidato.aspiracionSalarial}" filterStyle="display:none" styleClass="Wid10 Fs14">
+                                        <h:outputText value="$ #{ofertausuario.usuarioUsuarioId.candidato.aspiracionSalarial}" styleClass="Fs14"/>
+                                    </p:column>
+                                    <p:column headerText="Edad" filterBy="#{ofertausuario.usuarioUsuarioId.persona.edad}" filterStyle="display:none" styleClass="Wid10 Fs14">
+                                        <h:outputText value="#{ofertausuario.usuarioUsuarioId.persona.edad}" styleClass="Fs14"/>
+                                    </p:column>
+                                    <p:column headerText="Genero" filterBy="#{ofertausuario.usuarioUsuarioId.persona.genero == 1 ? 'Hombre' : 'Mujer'}" filterStyle="display:none" styleClass="Wid10 Fs14">
+                                        <h:outputText value="#{ofertausuario.usuarioUsuarioId.persona.genero == 1 ? 'Hombre' : 'Mujer'}" styleClass="Fs14"/>
+                                    </p:column>
+                                    <p:column headerText="Estado" filterBy="#{ofertausuario.estado.valor}" filterStyle="display:none" styleClass="Wid10 Fs14">
+                                        <h:outputText value="#{ofertausuario.estado.valor}" styleClass="Fs14"/>
+                                    </p:column>
+                                </p:dataTable>
+                            </div>
+                            <div class="EmptyBox80"/>
+                            <h4 class="Fs15 gray DispBlock FontBold">Pruebas</h4>
+                            <h5 class="Fs13 gray DispBlock FontLight">A continuación podrá ver el listado de las pruebas a presentar por los candidatos.</h5>
+                            <div class="Seperator"></div>
+                            <div class="Container100 Responsive MarTop10">
+                                <p:dataTable id="dtofertapruebas" var="ofertaprueba" value="#{detalleOfertaView.pruebasByPerfil}"  widgetVar="wv_dtofertapruebas"
+                                             filteredValue="#{detalleOfertaView.pruebasFlitradas}" reflow="true" styleClass="borderless"
+                                             rows="10"
+                                             paginator="true"
+                                             paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                                             rowsPerPageTemplate="10,20"
+                                             paginatorPosition="bottom"
+                                             selectionMode="single" selection="#{detalleOfertaView.preubaSeleccionada}" rowKey="#{ofertaprueba.perfilHasPruebaId}"
+                                             emptyMessage="No se encontraron pruebas!">
+                                    <f:facet name="header">
+                                        <p:toolbar style="border: none">
+                                            <f:facet name="left">
+                                                <p:outputPanel>
+                                                    <p:inputText id="globalFilter" onkeyup="PF('wv_dtofertapruebas').filter()" style="width: 250px; font-size: 12px" placeholder="Buscar"/>
+                                                </p:outputPanel>
+                                            </f:facet>
+                                            <f:facet name="right">
+                                                <p:commandButton action="/modulos/pruebas/ver?faces-redirect=true" icon="fa fa-plus-white" value="Agregar"/>
+                                            </f:facet>
+                                        </p:toolbar>
+                                    </f:facet>
+                                    <p:ajax event="rowSelect" listener="#{detalleOfertaView.onRowSelectVerPruebas}"/>
+                                    <p:column headerText="Nombre" filterBy="#{ofertaprueba.prueba.nombre}"  filterStyle="display:none" styleClass="Wid40 Fs14">
+                                        <h:outputText value="#{ofertaprueba.prueba.nombre}" styleClass="Fs14" />
+                                    </p:column>
+                                    <p:column headerText="Area" filterBy="#{ofertaprueba.prueba.area.valor}" filterStyle="display:none" styleClass="Wid10 Fs14">
+                                        <h:outputText value="#{ofertaprueba.prueba.area.valor}" styleClass="Fs14"/>
+                                    </p:column>
+                                    <p:column headerText="Porcentaje Minimo" filterBy="#{ofertaprueba.prueba.porcentajeMinimo}" filterStyle="display:none" styleClass="Wid10 Fs14">
+                                        <h:outputText value="#{ofertaprueba.prueba.porcentajeMinimo} %" styleClass="Fs14"/>
+                                    </p:column>
+                                    <p:column headerText="Limite de tiempo" filterBy="#{detalleOfertaView.getFormatDateTime(ofertaprueba.prueba.limiteTiempo)}" filterStyle="display:none" styleClass="Wid10 Fs14">
+                                        <h:outputText value="#{detalleOfertaView.getFormatDateTime(ofertaprueba.prueba.limiteTiempo)}" styleClass="Fs14"/>
+                                    </p:column>
+                                    <p:column headerText="Valor de la prueba" filterBy="#{ofertaprueba.porcentaje}" filterStyle="display:none" styleClass="Wid10 Fs14">
+                                        <h:outputText value="#{ofertaprueba.porcentaje} %" styleClass="Fs14"/>
+                                    </p:column>
+                                </p:dataTable>
+                            </div>
+                            <div class="EmptyBox80"/>
+                            <p:commandButton styleClass="Fright RedButton" value="Regresar" action="/modulos/ofertas/ver?faces-redirect=true"  
+                                             icon="fa fa-mail-reply-all-white" immediate="true"/>
+                        </h:panelGroup>
+                    </div>
+                </div>
+            </div>
+            <div class="EmptyBox50" />
+        </h:panelGroup>
+    </ui:define>
+
+</ui:composition>

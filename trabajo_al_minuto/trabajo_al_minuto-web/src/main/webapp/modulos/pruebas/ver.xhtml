@@ -1,0 +1,149 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../resources/template/main.xhtml">
+
+    <ui:define name="head">
+        <script type="text/javascript">
+            function skinChart() {
+                this.cfg.shadow = false;
+                this.cfg.seriesColors = ['#71CC8D', '#33AFDE', '#F7941E'];
+                this.cfg.grid = {
+                    background: '#EDF3F6',
+                    borderColor: '#D9E3E8',
+                    gridLineColor: '#D9E3E8',
+                    shadow: false
+                };
+                this.cfg.axesDefaults = {
+                    rendererOptions: {
+                        textColor: '#778D9B'
+                    }
+                };
+                this.cfg.seriesDefaults = {
+                    shadow: false,
+                    markerOptions: {
+                        shadow: false
+                    }
+                }
+            }
+
+            function skinPie() {
+                this.cfg.seriesColors = ['#dae8ef', '#27aae1', '#33ccff', '#9fadb5'];
+                this.cfg.grid = {
+                    background: '#ffffff',
+                    borderColor: '#eaeaea',
+                    gridLineColor: '#e5ebf0',
+                    shadow: false,
+                    borderWidth: 0
+                };
+                this.cfg.seriesDefaults.shadow = false;
+            }
+        </script>
+        <style type="text/css">
+            .jqplot-target, .jqplot-axis {
+                color: #778D9B;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="content">
+        <h:panelGroup id="pg_ver_pruebas">
+            <div class="Container90 Responsive MarTop20" style="margin-left: 5%">
+                <div class="ContainerIndent"> 
+                    <h4 class="Fs15 gray DispBlock FontBold">Pruebas</h4>
+                    <h5 class="Fs13 gray DispBlock FontLight">A continuación podrá ver el listado de sus pruebas.</h5>
+                    <div class="Seperator"></div>
+                    <div class="Container100 Responsive MarTop10">
+                        <h:panelGroup rendered="#{verPruebaView.usuariologin.rol.rolId eq 3}" id="png_pruebas">
+                            <p:dialog header="Comenzar prueba" widgetVar="dlg_run_pruebas" modal="true" width="80%"
+                                      closable="false" resizable="false" draggable="false">
+                                <h:panelGroup id="png_prueba_dlg">
+                                    <span class="Fs14 black">Iniciar prueba <strong>#{verPruebaView.pruebaSeleccionada.prueba.nombre}</strong> 
+                                        con un limite de tiempo de <strong>#{verPruebaView.getFormatDate(verPruebaView.pruebaSeleccionada.prueba.limiteTiempo)}</strong> ? </span>
+                                    <div class="EmptyBox10"/>
+                                    <span class="Fs14 red">¡Recuerda, una vez de inicio no debes regresar hasta terminarla o se cumpla el tiempo limite de la prueba,
+                                        de lo contrario será anulada y no podra presentarla de nuevo!</span>
+                                    <div class="EmptyBox10"/>
+                                    <p:commandButton styleClass="Fright RedButton" value="No" update="png_pruebas"
+                                                     icon="fa fa-close-white" immediate="true"/>
+                                    <p:commandButton styleClass="Fright GreenButton" value="Si" actionListener="#{verPruebaView.comenzarPrueba}"
+                                                     icon="fa fa-check-white" immediate="true"/>
+                                </h:panelGroup>
+                            </p:dialog> 
+                            <p:dialog header="Pruebas completadas" widgetVar="dlg_pruebas_ok" modal="true" width="80%" visible="#{verPruebaView.pruebasCompletas}"
+                                      closable="false" resizable="false" draggable="false">
+                                <h:panelGroup id="png_felicitacion_dlg">
+                                    <span class="Fs14 black">¡Felicitaciones, has completado todas las pruebas.!</span>
+                                    <div class="EmptyBox10"/>
+                                    <p:commandButton styleClass="Fright GreenButton" value="Salir" actionListener="#{verPruebaView.finalizarPrueba}"
+                                                     icon="fa fa-mail-reply-all-white" immediate="true"/>
+                                </h:panelGroup>
+                            </p:dialog> 
+                            <p:dataTable id="dtpruebas" var="prueba" value="#{verPruebaView.pruebasByPerfil}"  widgetVar="wv_dtpruebas"
+                                         reflow="true" styleClass="borderless"
+                                         selectionMode="single" selection="#{verPruebaView.pruebaSeleccionada}" 
+                                         rowKey="#{prueba.perfilHasPruebaId}"
+                                         emptyMessage="No se encontraron pruebas!">
+                                <p:ajax event="rowSelect" listener="#{verPruebaView.onRowSelectVerPruebas}" oncomplete="PF('dlg_run_pruebas').show()" update=":main:png_prueba_dlg"/>
+                                <p:column headerText="Nombre" styleClass="Wid40 Fs14">
+                                    <h:outputText value="#{prueba.prueba.nombre}" styleClass="Fs14" />
+                                </p:column>
+                                <p:column headerText="Area" styleClass="Wid10 Fs14">
+                                    <h:outputText value="#{prueba.prueba.area.valor}" styleClass="Fs14"/>
+                                </p:column>
+                                <p:column headerText="Porcentaje Minimo" styleClass="Wid10 Fs14">
+                                    <h:outputText value="#{prueba.prueba.porcentajeMinimo} %" styleClass="Fs14"/>
+                                </p:column>
+                                <p:column headerText="Limite de tiempo" styleClass="Wid10 Fs14">
+                                    <h:outputText value="#{verPruebaView.getFormatDate(prueba.prueba.limiteTiempo)}" styleClass="Fs14"/>
+                                </p:column>
+                                <p:column headerText="Valor de la prueba" styleClass="Wid10 Fs14">
+                                    <h:outputText value="#{prueba.porcentaje} %" styleClass="Fs14"/>
+                                </p:column>
+                            </p:dataTable>
+                        </h:panelGroup>
+                        <h:panelGroup rendered="#{verPruebaView.usuariologin.rol.rolId ne 3}">
+                            <p:dataTable id="dtpruebasplantilla" var="pruebaplantilla" value="#{verPruebaView.pruebasByEmpresa}"  widgetVar="wv_dtpruebasplantilla"
+                                         filteredValue="#{verPruebaView.filteredPruebasPlantilla}" reflow="true" styleClass="borderless"
+                                         rows="10"
+                                         paginator="true"
+                                         paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                                         rowsPerPageTemplate="10,20"
+                                         paginatorPosition="bottom"
+                                         selectionMode="single" selection="#{verPruebaView.pruebaPlantillaSeleccionada}" rowKey="#{pruebaplantilla.pruebaId}"
+                                         emptyMessage="No se encontraron ofertas!">
+                                <f:facet name="header">
+                                    <p:toolbar style="border: none">
+                                        <f:facet name="left">
+                                            <p:outputPanel>
+                                                <p:inputText id="globalFilter" onkeyup="PF('wv_dtpruebasplantilla').filter()" style="width: 250px; font-size: 12px" placeholder="Buscar"/>
+                                            </p:outputPanel>
+                                        </f:facet>
+                                    </p:toolbar>
+                                </f:facet>
+                                <p:ajax event="rowSelect" listener="#{verPruebaView.onRowSelectVerPruebas}"/>
+                                <p:column headerText="Nombre" filterBy="#{pruebaplantilla.nombre}"  filterStyle="display:none" styleClass="Wid40 Fs14">
+                                    <h:outputText value="#{pruebaplantilla.nombre}" styleClass="Fs14" />
+                                </p:column>
+                                <p:column headerText="Area" filterBy="#{pruebaplantilla.area.valor}" filterStyle="display:none" styleClass="Wid10 Fs14">
+                                    <h:outputText value="#{pruebaplantilla.area.valor}" styleClass="Fs14"/>
+                                </p:column>
+                                <p:column headerText="Porcentaje Minimo" filterBy="#{pruebaplantilla.porcentajeMinimo}" filterStyle="display:none" styleClass="Wid10 Fs14">
+                                    <h:outputText value="#{pruebaplantilla.porcentajeMinimo} %" styleClass="Fs14"/>
+                                </p:column>
+                                <p:column headerText="Limite de tiempo" filterBy="#{pruebaplantilla.limiteTiempo}" filterStyle="display:none" styleClass="Wid10 Fs14">
+                                    <h:outputText value="#{verPruebaView.getFormatDate(pruebaplantilla.limiteTiempo)}" styleClass="Fs14"/>
+                                </p:column>
+                            </p:dataTable>
+                        </h:panelGroup>
+                    </div>
+                </div>
+            </div>
+            <div class="EmptyBox50" />
+        </h:panelGroup>
+
+    </ui:define>
+
+</ui:composition>

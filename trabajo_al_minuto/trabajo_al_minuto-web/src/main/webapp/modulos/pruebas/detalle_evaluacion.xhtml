@@ -1,0 +1,98 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                template="../../resources/template/main.xhtml">
+
+    <ui:define name="head">
+        <script type="text/javascript">
+            function skinChart() {
+                this.cfg.shadow = false;
+                this.cfg.seriesColors = ['#71CC8D', '#33AFDE', '#F7941E'];
+                this.cfg.grid = {
+                    background: '#EDF3F6',
+                    borderColor: '#D9E3E8',
+                    gridLineColor: '#D9E3E8',
+                    shadow: false
+                };
+                this.cfg.axesDefaults = {
+                    rendererOptions: {
+                        textColor: '#778D9B'
+                    }
+                };
+                this.cfg.seriesDefaults = {
+                    shadow: false,
+                    markerOptions: {
+                        shadow: false
+                    }
+                }
+            }
+
+            function skinPie() {
+                this.cfg.seriesColors = ['#dae8ef', '#27aae1', '#33ccff', '#9fadb5'];
+                this.cfg.grid = {
+                    background: '#ffffff',
+                    borderColor: '#eaeaea',
+                    gridLineColor: '#e5ebf0',
+                    shadow: false,
+                    borderWidth: 0
+                };
+                this.cfg.seriesDefaults.shadow = false;
+            }
+        </script>
+        <style type="text/css">
+            .jqplot-target, .jqplot-axis {
+                color: #778D9B;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="content">
+        <div class="Container80 Responsive MarTop20" style="margin-left: 10%">
+            <div class="ContainerIndent"> 
+                <div class="Container100 Responsive">
+                    <h4 class="Fs15 gray DispBlock FontLight">Prueba #{detalleEvaluacionView.perfilHasPrueba.prueba.nombre}</h4>
+                    <h5 class="Fs13 gray DispBlock FontBold">Detalle de la prueba.</h5>
+                </div>
+                <div class="Seperator"></div>
+                <h:panelGroup id="pg_evauluacion_detalle">
+                    <div class="Container100 Responsive MarTop30">
+                        <div class="Container33 Responsive">
+                            <h4 class="Fs15 gray DispBlock FontLight">#{detalleEvaluacionView.perfilHasPrueba.prueba.porcentajeMinimo} %</h4>
+                            <h5 class="Fs13 gray DispBlock FontBold">Porcentaje minimo.</h5>
+                        </div>
+                        <div class="Container33 Responsive">
+                            <h4 class="Fs15 gray DispBlock FontLight">#{detalleEvaluacionView.porcentajeresultado} %</h4>
+                            <h5 class="Fs13 gray DispBlock FontBold">Porcentaje obtenido.</h5>
+                        </div>
+                        <div class="Container33 Responsive">
+                            <h4 class="Fs15 DispBlock FontLight #{detalleEvaluacionView.aproboPrueba ? 'green' : 'red'}">#{detalleEvaluacionView.aproboPrueba ? 'APROBADO' : 'NO APROBADO'}}</h4>
+                            <h5 class="Fs13 gray DispBlock FontBold">Resultado.</h5>
+                        </div>
+                    </div>
+                    <ui:repeat value="#{detalleEvaluacionView.respuestas}" var="respuesta" varStatus="status_respuesta"> 
+                        <div class="EmptyBox20"/>
+                        <p:outputLabel styleClass="Fs14 DispBlock blue FontBold" value="#{status_respuesta.index + 1} - #{respuesta.opcion.preguntaPreguntaId.enunciado}"/>
+                        <div class="EmptyBox5"/>
+                        <div class="Container100 Responsive" style="margin-left: 5%">
+                            <div class="Container60 Responsive">
+                                <p:outputLabel styleClass="Fs14 DispBlock black" value="#{respuesta.opcion.enunciado}"/>
+                            </div>
+                            <div class="Container30 Responsive">
+                                <i class="#{respuesta.opcion.correcta ? 'fa fa-check-green' : 'fa fa-close-red'}"></i>
+                            </div>
+                            <div class="EmptyBox10"/>
+                        </div>
+                    </ui:repeat>
+                </h:panelGroup>
+            </div>
+            <div class="EmptyBox50"/>
+            <p:commandButton styleClass="Fright RedButton" value="Regresar" action="/modulos/ofertas/detalle_postulacion?faces-redirect=true"
+                             icon="fa fa-mail-reply-all-white" immediate="true"/>
+        </div>
+        <div class="EmptyBox80"/>
+    </ui:define>
+
+</ui:composition>

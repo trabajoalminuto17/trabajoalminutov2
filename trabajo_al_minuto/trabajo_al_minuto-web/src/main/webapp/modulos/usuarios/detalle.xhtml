@@ -1,0 +1,121 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                template="../../resources/template/main.xhtml">
+
+    <ui:define name="head">
+        <script type="text/javascript">
+            function skinChart() {
+                this.cfg.shadow = false;
+                this.cfg.seriesColors = ['#71CC8D', '#33AFDE', '#F7941E'];
+                this.cfg.grid = {
+                    background: '#EDF3F6',
+                    borderColor: '#D9E3E8',
+                    gridLineColor: '#D9E3E8',
+                    shadow: false
+                };
+                this.cfg.axesDefaults = {
+                    rendererOptions: {
+                        textColor: '#778D9B'
+                    }
+                };
+                this.cfg.seriesDefaults = {
+                    shadow: false,
+                    markerOptions: {
+                        shadow: false
+                    }
+                }
+            }
+
+            function skinPie() {
+                this.cfg.seriesColors = ['#dae8ef', '#27aae1', '#33ccff', '#9fadb5'];
+                this.cfg.grid = {
+                    background: '#ffffff',
+                    borderColor: '#eaeaea',
+                    gridLineColor: '#e5ebf0',
+                    shadow: false,
+                    borderWidth: 0
+                };
+                this.cfg.seriesDefaults.shadow = false;
+            }
+        </script>
+        <style type="text/css">
+            .jqplot-target, .jqplot-axis {
+                color: #778D9B;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="content">
+        <h:panelGroup id="pg_detalle_usuario" rendered="#{not empty detalleUsuarioView.usuarioSeleccionado}">
+            <div class="Container80 Responsive MarTop20" style="margin-left: 10%">
+                <div class="ContainerIndent"> 
+                    <h4 class="Fs15 gray DispBlock FontLight">Información detallada de #{detalleUsuarioView.usuarioSeleccionado.persona.nombre}</h4>
+                    <h5 class="Fs13 gray DispBlock FontBold">En este módulo puede habilitar o inhabilitar el usuario.</h5>
+                    <div class="Seperator"></div>
+                    <div class="Container100 Responsive">
+                        <div class="Container50 Responsive MarTop10">
+                            <h4 class="Fs14 black  DispBlock black">Documento</h4>
+                            <p:outputLabel styleClass="Fs14 black  DispBlock black" value="#{detalleUsuarioView.usuarioSeleccionado.persona.documento}"/>
+                            <div class="EmptyBox30"/>
+                            <h4 class="Fs14 black  DispBlock black">Nombre*</h4>
+                            <p:outputLabel value="#{detalleUsuarioView.usuarioSeleccionado.persona.nombre}" 
+                                           />
+                            <div class="EmptyBox30"/>
+
+                            <h4 class="Fs14 black  DispBlock black">Fecha de creación</h4>
+                            <p:outputLabel styleClass="Fs14 black  DispBlock black" 
+                                           value="#{detalleUsuarioView.usuarioSeleccionado.fechaCreacion}">
+                                <f:convertDateTime pattern="MMMM, dd yyyy" locale="es" />
+                            </p:outputLabel>
+                            <div class="EmptyBox50"/>
+                            <h4 class="Fs14 black  DispBlock black">Edad*</h4>
+                            <p:outputLabel value="#{detalleUsuarioView.usuarioSeleccionado.persona.edad}" 
+                                           />
+                            <div class="EmptyBox30"/>
+                            <h4 class="Fs14 black FontOpenSansRegular DispBlock black">Teléfono fijo* </h4>
+                            <p:outputLabel value="#{detalleUsuarioView.usuarioSeleccionado.persona.telefonoFijo}"
+                                           />
+                        </div>
+                        <div class="Container50 Responsive MarTop10">
+                            <h4 class="Fs14 black  DispBlock black">Rol</h4>
+                            <p:outputLabel styleClass="Fs14 black  DispBlock black" value="#{detalleUsuarioView.usuarioSeleccionado.rol.nombre}"/>
+                            <div class="EmptyBox30"/>
+                            <h4 class="Fs14 black DispBlock black">Email*</h4>
+                            <p:outputLabel id="emailusuario" 
+                                           value="#{detalleUsuarioView.usuarioSeleccionado.email}"
+                                           >
+
+                            </p:outputLabel>
+                            <pe:tooltip value="Este email sera utilizado como loginID en la plataforma." for="emailusuario" showEvent="focus"
+                                        myPosition="top left"
+                                        atPosition="bottom left"/> 
+                            <div class="EmptyBox30"/>
+                            <h4 class="Fs14 black  DispBlock black">Estado*</h4>
+                            <p:inputSwitch value="#{detalleUsuarioView.usuarioSeleccionado.estado}" offLabel="Inactivo" onLabel="Activo" disabled="#{detalleUsuarioView.usuarioSeleccionado.rol.rolId == 1}"/>
+                            <div class="EmptyBox30"/>
+                            <h4 class="Fs14 black  DispBlock black">Genero*</h4>
+                            <p:outputLabel id="console" value="#{detalleUsuarioView.usuarioSeleccionado.persona.genero == 1 ? 'Hombre' : 'Mujer'}"
+                                           style="width:125px" />
+                                <div class="EmptyBox30"/>
+                                <h4 class="Fs14 black FontOpenSansRegular DispBlock black">Teléfono celular* </h4>
+                                <p:outputLabel value="#{detalleUsuarioView.usuarioSeleccionado.persona.celular}" 
+                                               />
+                        </div>
+                        <div class="EmptyBox80"/>
+
+                        <p:commandButton styleClass="Fright RedButton" value="Regresar" action="/modulos/usuarios/ver?faces-redirect=true"  
+                                         icon="fa fa-mail-reply-all-white" immediate="true"/>
+                        <p:commandButton styleClass="Fright BlueButton" value="Guardar" actionListener="#{detalleUsuarioView.updateUsuario}" 
+                                         icon="fa fa-save-white" update="pg_detalle_usuario" disabled="#{detalleUsuarioView.usuarioSeleccionado.rol.rolId == 1}"/>
+                    </div>
+                </div>
+            </div>
+            <div class="EmptyBox50" />
+        </h:panelGroup>
+    </ui:define>
+
+</ui:composition>
