@@ -146,7 +146,7 @@ public class DetallePruebaView extends ComponenteWeb implements Serializable {
         pe.setPruebaId(p.getId());
         pe.setPorcentajeMinimo(p.getPorcentaje());
         pe.setLimiteTiempo(p.getTiempo());
-        pe.setPreguntaPlantillaList(setPreguntasEmpresa(p));
+        pe.setPreguntaPlantillaList(setPreguntasPlantilla(p));
         pe.setEmpresaEmpresaId(new Empresa(p.getEmpresa()));
         pe.setEstado(p.getEstado());
         return pe;
@@ -164,7 +164,7 @@ public class DetallePruebaView extends ComponenteWeb implements Serializable {
         return preguntas;
     }
 
-    private List<PreguntaPlantilla> setPreguntasEmpresa(PruebaEmpresa p) {
+    private List<PreguntaPlantilla> setPreguntasPlantilla(PruebaEmpresa p) {
         List<PreguntaPlantilla> preguntas = new ArrayList();
         for (PreguntaEmpresa pregunta : p.getPreguntas()) {
             if (validarPreguntaNull(pregunta)) {

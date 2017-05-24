@@ -85,11 +85,17 @@ public class DetallePostulacionView extends ComponenteWeb implements Serializabl
             }
             if (getUsuarioHasOfertaId() != null) {
                 usuarioHasOfertaSeleccionada = usuarioEjb.findUsuarioHasOferta(getUsuarioHasOfertaId());
-                citacionSeleccionada = usuarioHasOfertaSeleccionada.getCitacion();
-                pruebas = pruebaEjb.getPruebasByPerfil(usuarioHasOfertaSeleccionada.getOfertasOfertaId().getPerfil().getPerfilId());
-                Double d = parcentajeMinimoEvaluacion(pruebas);
-                aproboEvaluacion = d < citacionSeleccionada.getEvaluacion().getPorcentaje();
-                porcentajeMinimoEvaluacion = doubleFormat(d);
+                if (usuarioHasOfertaSeleccionada.getCitacion() != null) {
+                    citacionSeleccionada = usuarioHasOfertaSeleccionada.getCitacion();
+                    pruebas = pruebaEjb.getPruebasByPerfil(usuarioHasOfertaSeleccionada.getOfertasOfertaId().getPerfil().getPerfilId());
+                    if (!pruebas.isEmpty()) {
+                        Double d = parcentajeMinimoEvaluacion(pruebas);
+                        if (citacionSeleccionada.getEvaluacion() != null) {
+                            aproboEvaluacion = d < citacionSeleccionada.getEvaluacion().getPorcentaje();
+                            porcentajeMinimoEvaluacion = doubleFormat(d);
+                        }
+                    }
+                }
             }
             fechaActual = new Date();
         } catch (BusinessException ex) {

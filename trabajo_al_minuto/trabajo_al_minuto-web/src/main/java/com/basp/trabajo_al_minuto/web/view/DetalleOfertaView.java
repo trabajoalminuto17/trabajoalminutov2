@@ -86,15 +86,20 @@ public class DetalleOfertaView extends ComponenteWeb implements Serializable {
     public void onRowSelectVerUsuarioHasOfertas(SelectEvent event) {
         try {
             UsuarioHasOferta uho = (UsuarioHasOferta) event.getObject();
-            if (!uho.getCitacion().getActivarPruebas()) {
-                if (uho.getEstado().getCatalogoId() != 9L) {
+            if (uho.getEstado().getCatalogoId() != 9L) {
+                if (uho.getEstado().getCatalogoId() == 8L) {
                     FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("usuarioHasOfertaId", ((UsuarioHasOferta) event.getObject()).getUsuarioHasOfertaId());
                     FacesContext.getCurrentInstance().getExternalContext().redirect(DETALLE_POSTULACION_PAGE);
                 } else {
-                    message = webMessage(CITACION_RECHAZADA);
+                    if (!uho.getCitacion().getActivarPruebas()) {
+                        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("usuarioHasOfertaId", ((UsuarioHasOferta) event.getObject()).getUsuarioHasOfertaId());
+                        FacesContext.getCurrentInstance().getExternalContext().redirect(DETALLE_POSTULACION_PAGE);
+                    } else {
+                        message = webMessage(MensajeWeb.USUARIO_EN_PRUEBAS);
+                    }
                 }
             } else {
-                message = webMessage(MensajeWeb.USUARIO_EN_PRUEBAS);
+                message = webMessage(CITACION_RECHAZADA);
             }
         } catch (IOException ex) {
             Logger.getLogger(DetalleOfertaView.class.getName()).log(Level.SEVERE, "onRowSelectVerUsuarioHasOfertas", ex);

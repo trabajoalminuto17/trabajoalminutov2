@@ -30,6 +30,7 @@ public enum MensajeWeb {
     QUESTION_REPEAT(ERROR_MESSAGE, "Hay preguntas con más de una respuesta seleccionada.", FacesMessage.SEVERITY_ERROR),
     QUESTION_NULL(ERROR_MESSAGE, "Hay preguntas sin una respuesta seleccionada.", FacesMessage.SEVERITY_ERROR),
     CHANGE_NOT(ERROR_MESSAGE, "No se han podido guardar los cambios, ".concat(INTENTE_DE_NUEVO_MESSAGE), FacesMessage.SEVERITY_ERROR),
+    PRUEBA_NOT(ERROR_MESSAGE, "No se ha podido crear la prueba, ".concat(INTENTE_DE_NUEVO_MESSAGE), FacesMessage.SEVERITY_ERROR),
     USUARIO_OK(EXITO_MESSAGE, "Usuario creado correctamente.", FacesMessage.SEVERITY_INFO),
     USUARIO_NOT(ERROR_MESSAGE, "No se han podido crear el usuario, ".concat(INTENTE_DE_NUEVO_MESSAGE), FacesMessage.SEVERITY_ERROR),
     CITACION_OK(EXITO_MESSAGE, "Citación creada correctamente.", FacesMessage.SEVERITY_INFO),
