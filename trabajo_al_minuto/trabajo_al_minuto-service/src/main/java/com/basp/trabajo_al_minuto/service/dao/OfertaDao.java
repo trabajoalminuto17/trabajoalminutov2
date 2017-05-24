@@ -17,6 +17,7 @@ import static com.basp.trabajo_al_minuto.model.business.BusinessQuery.GET_OFERTA
 import com.basp.trabajo_al_minuto.model.dto.PersistenceObject;
 import com.basp.trabajo_al_minuto.service.dte.OfertaAplicada;
 import com.basp.trabajo_al_minuto.service.entity.Oferta;
+import com.basp.trabajo_al_minuto.service.entity.PerfilHasPrueba;
 import com.basp.trabajo_al_minuto.service.entity.UsuarioHasOferta;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -45,6 +46,13 @@ public class OfertaDao {
     }
 
     protected Oferta _updateOferta(Oferta o) throws Exception {
+        List<PerfilHasPrueba> phps = o.getPerfil().getPerfilHasPruebaList();
+        for (PerfilHasPrueba php : phps) {
+            php.setPerfilHasPruebaId(null);
+            php.getPerfil().setPerfilId(null);
+            php.getPrueba().setPruebaId(null);
+        }
+        o.getPerfil().setPerfilHasPruebaList(phps);
         return (Oferta) BP.update(o);
     }
 
