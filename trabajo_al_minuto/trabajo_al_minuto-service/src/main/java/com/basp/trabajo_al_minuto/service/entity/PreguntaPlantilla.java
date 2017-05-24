@@ -44,7 +44,7 @@ public class PreguntaPlantilla implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "preguntaPlantillaPreguntaId")
     private List<OpcionPlantilla> opcionPlantillaList;
     @JoinColumn(name = "prueba_plantilla_prueba_id", referencedColumnName = "prueba_id")
-    @ManyToOne(optional = false)
+    @ManyToOne(cascade = CascadeType.ALL, optional = false)
     private PruebaPlantilla pruebaPlantillaPruebaId;
 
     public PreguntaPlantilla() {
