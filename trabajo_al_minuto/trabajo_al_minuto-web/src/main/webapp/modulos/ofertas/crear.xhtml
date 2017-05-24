@@ -124,95 +124,82 @@
 
                         <div class="Container100 Responsive">
                             <h:panelGroup id="pg_add_pruebas">
-
+                                <p:dialog header="Ingresa valor de la prueba" widgetVar="dlg" width="30%" 
+                                          closable="false" resizable="false" draggable="false" modal="true">
+                                    <h:panelGroup id="add_dlg">
+                                        <span class="Fs14 black">Ingresa el valor de la prueba #{crearOfertaView.pruebaPlantillaSeleccionada.nombre}</span>
+                                        <div class="EmptyBox10"/>
+                                        <p:inputNumber value="#{crearOfertaView.valor}" required="true"
+                                                       maxValue="#{crearOfertaView.valorMinimo}">
+                                            <p:ajax update="add_dlg" />  
+                                        </p:inputNumber>
+                                        <div class="EmptyBox10"/>
+                                        <p:commandButton styleClass="GreenButton" value="Agregar" 
+                                                         actionListener="#{crearOfertaView.onRowSelectPruebasPlantilla(crearOfertaView.pruebaPlantillaSeleccionada, crearOfertaView.valor)}"
+                                                         icon="fa fa-check-white" immediate="true"  update=":main:pg_add_pruebas"/>
+                                        <p:commandButton styleClass="RedButton" value="Cancelar" update=":main:pg_add_pruebas"
+                                                         icon="fa fa-close-white" immediate="true"/>
+                                    </h:panelGroup>
+                                </p:dialog> 
+                                <h4 class="Fs15 gray DispBlock FontBold">Plantillas Pruebas</h4>
+                                <h5 class="Fs13 gray DispBlock FontLight">A continuación podrá ver el listado de las pruebas creadas.</h5>
+                                <div class="EmptyBox30"/>
                                 <div class="Container50 Responsive">
-                                    <!--<h4 class="Fs15 gray DispBlock FontBold">Plantillas Pruebas</h4>-->
-                                    <!--<h5 class="Fs13 gray DispBlock FontLight">A continuación podrá ver el listado de las pruebas creadas.</h5>-->
-                                    <p:fieldset id="availableCarsField" legend="Plantilla">
+                                    <p:fieldset legend="Plantilla">
                                         <p:dataTable 
                                             id="dtusers" 
                                             var="pruebaplantilla" 
                                             value="#{crearOfertaView.pruebasSource}"  
-                                            widgetVar="wv_dtusers"
-                                            filteredValue="#{verUsuariosView.usuariosFlitrados}" 
+                                            widgetVar="wv_dtpruebasplantilla"
                                             reflow="true" 
                                             styleClass="borderless"
-                                            rows="10"
-                                            paginator="true"
-                                            paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
-                                            rowsPerPageTemplate="10,20"
-                                            paginatorPosition="bottom"
-                                            selection="#{crearOfertaView.pruebaPlantillaSeleccionada}"
+                                            selectionMode="single" selection="#{crearOfertaView.pruebaPlantillaSeleccionada}"
                                             rowKey="#{pruebaplantilla.pruebaId}"
-                                            emptyMessage="No se encontraron usuarios!">
-                                            <!--<p:ajax event="rowSelect" listener="#{crearOfertaView.onRowSelectPruebas}" update=":main:pg_add_pruebas"/>-->
-                                            <p:column styleClass="Wid10">
-                                                <h:outputText id="dragIcon" styleClass="ui-icon ui-icon-arrow-4" />
-                                                <p:draggable for="dragIcon" revert="true" helper="clone"/>
-                                            </p:column>
-                                            <p:column headerText="Nombre" filterBy="#{pruebaplantilla.nombre}"  
-                                                      filterStyle="display:none" 
+                                            emptyMessage="No hay plantillas disponibles!">
+                                            <p:ajax event="rowSelect" listener="#{crearOfertaView.validateMinValue}"  oncomplete="PF('dlg').show()" 
+                                                    update=":main:pg_add_pruebas"/>
+                                            <p:column headerText="Nombre"
                                                       styleClass="Wid40 Fs14">
                                                 <h:outputText value="#{pruebaplantilla.nombre}" styleClass="Fs14" />
                                             </p:column>
-                                            <p:column headerText="% aprobar" filterBy="#{pruebaplantilla.porcentajeMinimo}" filterStyle="display:none" styleClass="Wid10 Fs14">
-                                                <h:outputText value="#{pruebaplantilla.porcentajeMinimo} %" styleClass="Fs14"/>
-                                            </p:column>
                                         </p:dataTable>
                                     </p:fieldset>
-
-                                    <p:droppable for="selectedCars" 
-                                                 tolerance="touch" 
-                                                 activeStyleClass="ui-state-highlight"
-                                                 datasource="availableCars" 
-                                                 onDrop="handleDrop">
-                                        <p:ajax listener="#{dndCarsView.onCarDrop}" update="dropArea availableCars" />
-                                    </p:droppable>
                                 </div>
-
                                 <div class="Container50 Responsive">
-                                    <!--                                    <h4 class="Fs15 gray DispBlock FontBold">Plantillas Pruebas</h4>
-                                                                        <h5 class="Fs13 gray DispBlock FontLight">A continuación podrá ver el listado de las pruebas creadas.</h5>-->
-                                    <p:fieldset id="availableCarsField" legend="Prueba">
+                                    <p:fieldset legend="Prueba">
                                         <p:dataTable id="dtpruebas" 
                                                      var="prueba"
                                                      value="#{crearOfertaView.pruebasTarget}" 
                                                      widgetVar="wv_dtpruebas"
                                                      reflow="true" 
                                                      styleClass="borderless"
-                                                     rows="10"
-                                                     paginator="true"
-                                                     paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
-                                                     rowsPerPageTemplate="10,20"
-                                                     paginatorPosition="bottom"
-                                                     selection="#{crearOfertaView.pruebaPlantillaSeleccionada}" 
-                                                     rowKey="#{prueba.prueba.pruebaId}"
-                                                     emptyMessage="No se encontraron ofertas!">
+                                                     selectionMode="single"  selection="#{crearOfertaView.pruebaSeleccionada}" 
+                                                     rowKey="#{prueba.perfilHasPruebaId}"
+                                                     emptyMessage="No hay pruebas agregadas!">
                                             <p:ajax event="rowSelect" listener="#{crearOfertaView.onRowSelectPruebas}" update=":main:pg_add_pruebas"/>
-                                            <p:column headerText="Nombre" filterBy="#{prueba.prueba.nombre}"  filterStyle="display:none" styleClass="Wid40 Fs14">
+                                            <p:column headerText="Nombre"
+                                                      styleClass="Wid40 Fs14">
                                                 <h:outputText value="#{prueba.prueba.nombre}" styleClass="Fs14" />
                                             </p:column>
-                                            <p:column headerText="Porcentaje Minimo" filterBy="#{prueba.prueba.porcentajeMinimo}" filterStyle="display:none" styleClass="Wid10 Fs14">
-                                                <h:outputText value="#{prueba.prueba.porcentajeMinimo} %" styleClass="Fs14"/>
+                                            <p:column headerText="Valor prueba" styleClass="Wid10 Fs14">
+                                                <h:outputText value="#{prueba.porcentaje} %" styleClass="Fs14"/>
                                             </p:column>
                                         </p:dataTable>
                                     </p:fieldset>
                                 </div>
-
-
-
                             </h:panelGroup>
                         </div>
-                        <!--                        <p:commandButton styleClass="Fright RedButton" value="Regresar" action="/modulos/usuarios/ver?faces-redirect=true"
-                                                                 icon="fa fa-mail-reply-all-white" immediate="true"/>
-                                                <p:commandButton styleClass="Fright BlueButton"
-                                                                 value="Guardar" 
-                                                                 icon="fa fa-save-white" 
-                                                                 update="pg_crear_oferta"/>-->
+                        <div class="EmptyBox50"/>
+                        <p:commandButton styleClass="Fright RedButton" value="Regresar" action="/inicio?faces-redirect=true"
+                                         icon="fa fa-mail-reply-all-white" immediate="true"/>
+                        <p:commandButton styleClass="Fright BlueButton"
+                                         value="Guardar" actionListener="#{crearOfertaView.createOferta}"
+                                         icon="fa fa-save-white" 
+                                         update="pg_crear_oferta"/>
                     </div>
                 </div>
             </div>
-            <div class="EmptyBox50" />
+            <div class="EmptyBox80" />
         </h:panelGroup>
     </ui:define>
 

@@ -167,27 +167,12 @@
                             <h5 class="Fs13 gray DispBlock FontLight">A continuación podrá ver el listado de las pruebas a presentar por los candidatos.</h5>
                             <div class="Seperator"></div>
                             <div class="Container100 Responsive MarTop10">
-                                <p:dataTable id="dtofertapruebas" var="ofertaprueba" value="#{detalleOfertaView.pruebasByPerfil}"  widgetVar="wv_dtofertapruebas"
-                                             filteredValue="#{detalleOfertaView.pruebasFlitradas}" reflow="true" styleClass="borderless"
-                                             rows="10"
-                                             paginator="true"
-                                             paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
-                                             rowsPerPageTemplate="10,20"
-                                             paginatorPosition="bottom"
-                                             selectionMode="single" selection="#{detalleOfertaView.preubaSeleccionada}" rowKey="#{ofertaprueba.perfilHasPruebaId}"
+                                <p:dataTable id="dtofertapruebas" var="ofertaprueba" value="#{detalleOfertaView.pruebasByPerfil}"  
+                                             widgetVar="wv_dtofertapruebas"
+                                             reflow="true" styleClass="borderless"
+                                             selectionMode="single" selection="#{detalleOfertaView.preubaSeleccionada}"
+                                             rowKey="#{ofertaprueba.perfilHasPruebaId}"
                                              emptyMessage="No se encontraron pruebas!">
-                                    <f:facet name="header">
-                                        <p:toolbar style="border: none">
-                                            <f:facet name="left">
-                                                <p:outputPanel>
-                                                    <p:inputText id="globalFilter" onkeyup="PF('wv_dtofertapruebas').filter()" style="width: 250px; font-size: 12px" placeholder="Buscar"/>
-                                                </p:outputPanel>
-                                            </f:facet>
-                                            <f:facet name="right">
-                                                <p:commandButton action="/modulos/pruebas/ver?faces-redirect=true" icon="fa fa-plus-white" value="Agregar"/>
-                                            </f:facet>
-                                        </p:toolbar>
-                                    </f:facet>
                                     <p:ajax event="rowSelect" listener="#{detalleOfertaView.onRowSelectVerPruebas}"/>
                                     <p:column headerText="Nombre" filterBy="#{ofertaprueba.prueba.nombre}"  filterStyle="display:none" styleClass="Wid40 Fs14">
                                         <h:outputText value="#{ofertaprueba.prueba.nombre}" styleClass="Fs14" />

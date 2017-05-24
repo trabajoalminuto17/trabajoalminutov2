@@ -35,6 +35,8 @@ public enum MensajeWeb {
     CITACION_OK(EXITO_MESSAGE, "Citación creada correctamente.", FacesMessage.SEVERITY_INFO),
     CITACION_NOT(ERROR_MESSAGE, "No se han podido crear la citacion, ".concat(INTENTE_DE_NUEVO_MESSAGE), FacesMessage.SEVERITY_ERROR),
     OFERTA_APLICADA_OK(EXITO_MESSAGE, "Has aplicado correctamente ha esta oferta.", FacesMessage.SEVERITY_INFO),
+    OFERTA_CREADA_OK(EXITO_MESSAGE, "La oferta se ha creado correctamente.", FacesMessage.SEVERITY_INFO),
+    OFERTA_CREADA_NOT(ERROR_MESSAGE, "No se ha podido crear la oferta, ".concat(INTENTE_DE_NUEVO_MESSAGE), FacesMessage.SEVERITY_ERROR),
     OFERTA_APLICADA_NOT(ERROR_MESSAGE, "No es posible aplicar a esta oferta, ".concat(INTENTE_DE_NUEVO_MESSAGE), FacesMessage.SEVERITY_ERROR),
     CITACION_RECHAZADA_OK(EXITO_MESSAGE, "Citación rechazada correctamente.", FacesMessage.SEVERITY_INFO),
     CITACION_RECHAZADA_NOT(ERROR_MESSAGE, "No se ha podido rechazar la citacion, ".concat(INTENTE_DE_NUEVO_MESSAGE), FacesMessage.SEVERITY_ERROR),
