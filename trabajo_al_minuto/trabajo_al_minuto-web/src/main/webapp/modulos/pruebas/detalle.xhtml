@@ -63,7 +63,7 @@
                                          requiredMessage="Nombre no válido" validatorMessage="Nombre no válido"/>
                             <div class="EmptyBox30"/>
                             <h4 class="Fs14 black  DispBlock black">Tiempo límite*</h4>
-                            <p:calendar value="#{detallePruebaView.pruebaSeleccionada.limiteTiempo}" 
+                            <p:calendar value="#{detallePruebaView.pruebaSeleccionada.tiempo}" 
                                         required="true" pattern="HH:mm" 
                                         timeOnly="true"
                                         requiredMessage="Tiempo límite no válido" 
@@ -85,7 +85,7 @@
                                          requiredMessage="Descripción no válida" validatorMessage="Descripción no válida"/>
                             <div class="EmptyBox30"/>
                             <h4 class="Fs14 black FontOpenSansRegular DispBlock black">Procentaje mínimo* </h4>
-                            <p:inputText value="#{detallePruebaView.pruebaSeleccionada.porcentajeMinimo}" type="number" required="true" styleClass="Wid60"
+                            <p:inputText value="#{detallePruebaView.pruebaSeleccionada.porcentaje}" type="number" required="true" styleClass="Wid60"
                                          requiredMessage="Procentaje mínimo no válido" validatorMessage="Procentaje mínimo no válido" />
                             <div class="EmptyBox30"/>
                             <h4 class="Fs14 black  DispBlock black">Estado*</h4>
@@ -97,7 +97,7 @@
                     <div class="Container100 Responsive">
                         <div class="Container2 Responsive">
                             <h:commandLink  class="Fs14 DispBlock blue Underline" immediate="true" title="Agregar pregunta" actionListener="#{detallePruebaView.addPregunta}"
-                                            rendered="#{detallePruebaView.pruebaSeleccionada.preguntaPlantillaList.size() le 10}">
+                                            rendered="#{detallePruebaView.pruebaSeleccionada.preguntas.size() le 10}">
                                 <i class="fa fa-plus"></i>
                                 <p:ajax update="main:pg_detalle_prueba"/>
                             </h:commandLink> 
@@ -108,11 +108,11 @@
                         </div>
                     </div>
                     <div class="Seperator"></div>
-                    <ui:repeat value="#{detallePruebaView.pruebaSeleccionada.preguntaPlantillaList}" var="pregunta" varStatus="status_pregunta"> 
+                    <ui:repeat value="#{detallePruebaView.pruebaSeleccionada.preguntas}" var="pregunta" varStatus="status_pregunta"> 
                         <div class="EmptyBox20"/>
                         <div class="Container2 Responsive">
                             <h:commandLink  class="Fs14 DispBlock blue Underline" immediate="true" title="Eliminar pregunta"
-                                            rendered="#{detallePruebaView.pruebaSeleccionada.preguntaPlantillaList.size() gt 1}" actionListener="#{detallePruebaView.removePregunta(pregunta)}">
+                                            rendered="#{detallePruebaView.pruebaSeleccionada.preguntas.size() gt 1}" actionListener="#{detallePruebaView.removePregunta(pregunta)}">
                                 <i class="fa fa-close-red"></i>
                                 <p:ajax update="main:pg_detalle_prueba"/>
                             </h:commandLink> 
@@ -127,7 +127,7 @@
                             <div class="Container68 Responsive">
                                 <div class="Container5 Responsive">
                                     <h:commandLink  class="Fs14 DispBlock blue Underline" immediate="true" title="Agregar opción"
-                                                    rendered="#{pregunta.opcionPlantillaList.size() le 3}" actionListener="#{detallePruebaView.addOpcion(pregunta)}">
+                                                    rendered="#{pregunta.opciones.size() le 3}" actionListener="#{detallePruebaView.addOpcion(pregunta)}">
                                         <i class="fa fa-plus"></i>
                                         <p:ajax update="main:pg_detalle_prueba"/>
                                     </h:commandLink> 
@@ -139,11 +139,11 @@
                             <div class="Container30 Responsive">
                                 <h4 class="Fs14 black FontOpenSansRegular DispBlock black">Correcta</h4>
                             </div>
-                            <ui:repeat value="#{pregunta.opcionPlantillaList}" var="opcion" varStatus="status_opcion">
+                            <ui:repeat value="#{pregunta.opciones}" var="opcion" varStatus="status_opcion">
                                 <div class="Container70 Responsive">
                                     <div class="Container5 Responsive">
                                         <h:commandLink  class="Fs14 DispBlock blue Underline MarTop10" immediate="true" title="Eliminar opción"
-                                                        rendered="#{pregunta.opcionPlantillaList.size() gt 2}" actionListener="#{detallePruebaView.removeOpcion(opcion)}">
+                                                        rendered="#{pregunta.opciones.size() gt 2}" actionListener="#{detallePruebaView.removeOpcion(pregunta, opcion)}">
                                             <i class="fa fa-close-red"></i>
                                             <p:ajax update="main:pg_detalle_prueba"/>
                                         </h:commandLink> 
@@ -154,9 +154,7 @@
                                     </div>
                                 </div>
                                 <div class="Container30 Responsive">
-                                    <p:selectBooleanCheckbox value="#{opcion.correcta}">
-                                        <p:ajax update="main:pg_detalle_prueba" listener="#{detallePruebaView.cambiarOpcion(pregunta, opcion)}" />
-                                    </p:selectBooleanCheckbox>
+                                    <p:selectBooleanCheckbox value="#{opcion.correcta}"/>
                                 </div>
                                 <div class="EmptyBox20"/>
                             </ui:repeat>
