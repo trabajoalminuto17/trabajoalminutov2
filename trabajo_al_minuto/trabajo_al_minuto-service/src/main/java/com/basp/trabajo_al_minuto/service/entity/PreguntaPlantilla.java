@@ -44,7 +44,7 @@ public class PreguntaPlantilla implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "preguntaPlantillaPreguntaId")
     private List<OpcionPlantilla> opcionPlantillaList;
     @JoinColumn(name = "prueba_plantilla_prueba_id", referencedColumnName = "prueba_id")
-    @ManyToOne(cascade = CascadeType.ALL, optional = false)
+    @ManyToOne(optional = false)
     private PruebaPlantilla pruebaPlantillaPruebaId;
 
     public PreguntaPlantilla() {
@@ -110,5 +110,5 @@ public class PreguntaPlantilla implements Serializable {
     public String toString() {
         return "com.basp.trabajo_al_minuto.service.entity.PreguntaPlantilla[ preguntaId=" + preguntaId + " ]";
     }
-    
+
 }

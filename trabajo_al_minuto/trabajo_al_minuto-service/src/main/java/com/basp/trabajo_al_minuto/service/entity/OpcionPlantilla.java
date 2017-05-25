@@ -42,7 +42,7 @@ public class OpcionPlantilla implements Serializable {
     @Column(name = "correcta")
     private Boolean correcta;
     @JoinColumn(name = "pregunta_plantilla_pregunta_id", referencedColumnName = "pregunta_id")
-    @ManyToOne(cascade = CascadeType.ALL, optional = false)
+    @ManyToOne(optional = false)
     private PreguntaPlantilla preguntaPlantillaPreguntaId;
 
     public OpcionPlantilla() {
@@ -108,5 +108,5 @@ public class OpcionPlantilla implements Serializable {
     public String toString() {
         return "com.basp.trabajo_al_minuto.service.entity.OpcionPlantilla[ opcionId=" + opcionId + " ]";
     }
-    
+
 }
