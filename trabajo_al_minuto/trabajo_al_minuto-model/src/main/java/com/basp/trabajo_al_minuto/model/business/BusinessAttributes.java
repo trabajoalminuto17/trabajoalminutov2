@@ -19,4 +19,6 @@ public class BusinessAttributes {
 //    DATASOURCES
 //    DS_PRODUCTION
     public static final String PERSISTENCE_SERVICE = "persistence_trabajo_al_minuto";
+
+    public static final String REPORTE_CANDIDATOS_EVALUADAS = "D:\\resultados_por_cargo.jrxml";
 }
