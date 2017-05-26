@@ -10,6 +10,7 @@ import com.basp.trabajo_al_minuto.service.dao.OfertaDao;
 import com.basp.trabajo_al_minuto.service.dte.OfertaAplicada;
 import com.basp.trabajo_al_minuto.service.entity.Oferta;
 import com.basp.trabajo_al_minuto.service.facade.OfertaFacade;
+import java.io.ByteArrayInputStream;
 import java.util.List;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -89,6 +90,15 @@ public class OfertaEjb extends OfertaDao implements OfertaFacade {
     public List<Oferta> getMisOfertas(Long id) throws BusinessException {
         try {
             return _getMisOfertas(id);
+        } catch (Exception ex) {
+            throw new BusinessException(ex);
+        }
+    }
+
+    @Override
+    public ByteArrayInputStream getReporteDetalleEvaluados(Long perfil, Integer cantidad) throws BusinessException {
+        try {
+            return _getReporteDetalleEvaluados(perfil, cantidad);
         } catch (Exception ex) {
             throw new BusinessException(ex);
         }

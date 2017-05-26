@@ -6,6 +6,7 @@
 package com.basp.trabajo_al_minuto.service.dao;
 
 import static com.basp.trabajo_al_minuto.model.business.BusinessAttributes.PERSISTENCE_SERVICE;
+import static com.basp.trabajo_al_minuto.model.business.BusinessAttributes.REPORTE_CANDIDATOS_EVALUADAS;
 import com.basp.trabajo_al_minuto.model.business.BusinessPersistence;
 import static com.basp.trabajo_al_minuto.model.business.BusinessPersistence.JPQL;
 import static com.basp.trabajo_al_minuto.model.business.BusinessQuery.GET_MIS_OFERTAS;
@@ -14,16 +15,22 @@ import static com.basp.trabajo_al_minuto.model.business.BusinessQuery.GET_OFERTA
 import static com.basp.trabajo_al_minuto.model.business.BusinessQuery.GET_OFERTAS_EXTERNAL;
 import static com.basp.trabajo_al_minuto.model.business.BusinessQuery.GET_OFERTAS_MAS_APLICADAS;
 import static com.basp.trabajo_al_minuto.model.business.BusinessQuery.GET_OFERTAS_MAS_APLICADAS_BY_EMPRESA;
+import com.basp.trabajo_al_minuto.model.business.BusinessUtils;
 import com.basp.trabajo_al_minuto.model.dto.PersistenceObject;
 import com.basp.trabajo_al_minuto.service.dte.OfertaAplicada;
 import com.basp.trabajo_al_minuto.service.entity.Oferta;
 import com.basp.trabajo_al_minuto.service.entity.PerfilHasPrueba;
 import com.basp.trabajo_al_minuto.service.entity.UsuarioHasOferta;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import javax.persistence.Persistence;
+import net.sf.jasperreports.engine.JasperExportManager;
 
 /**
  *
@@ -102,5 +109,15 @@ public class OfertaDao {
 
     protected List<Oferta> _getMisOfertas(Long id) throws Exception {
         return BP.read(new PersistenceObject(UsuarioHasOferta.class, GET_MIS_OFERTAS, JPQL, id));
+    }
+
+    protected ByteArrayInputStream _getReporteDetalleEvaluados(Long perfil, Integer cantidad) throws Exception {
+        Map<String, Object> params = new HashMap();
+        params.put("COD_PERFIL", perfil);
+        params.put("CANT_REGISTROS", cantidad);
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        JasperExportManager.exportReportToPdfStream(BusinessUtils.reportGenerate(params, REPORTE_CANDIDATOS_EVALUADAS, BP.getConnection()), baos);
+        return new ByteArrayInputStream(baos.toByteArray());
     }
 }
