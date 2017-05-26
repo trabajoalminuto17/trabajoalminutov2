@@ -5,7 +5,6 @@
  */
 package com.basp.trabajo_al_minuto.web.view;
 
-import static com.basp.trabajo_al_minuto.web.model.AtributosWeb.DETALLE_OFERTA_PAGE;
 import static com.basp.trabajo_al_minuto.web.model.AtributosWeb.DETALLE_POSTULACION_PAGE;
 import static com.basp.trabajo_al_minuto.web.model.MensajeWeb.CITACION_RECHAZADA;
 import static com.basp.trabajo_al_minuto.web.model.UtilWeb.webMessage;
@@ -15,10 +14,11 @@ import com.basp.trabajo_al_minuto.model.business.BusinessException;
 import com.basp.trabajo_al_minuto.service.entity.Catalogo;
 import com.basp.trabajo_al_minuto.service.entity.Oferta;
 import com.basp.trabajo_al_minuto.service.entity.PerfilHasPrueba;
-import com.basp.trabajo_al_minuto.service.entity.Prueba;
 import com.basp.trabajo_al_minuto.service.entity.Usuario;
+import static com.basp.trabajo_al_minuto.web.model.AtributosWeb.VER_DETALLE_PRUEBA_PAGE;
 import com.basp.trabajo_al_minuto.web.model.ComponenteWeb;
 import com.basp.trabajo_al_minuto.web.model.MensajeWeb;
+import static com.basp.trabajo_al_minuto.web.model.MensajeWeb.NO_EVALUADOS;
 import static com.basp.trabajo_al_minuto.web.model.MensajeWeb.OFERTA_APLICADA_NOT;
 import static com.basp.trabajo_al_minuto.web.model.MensajeWeb.OFERTA_APLICADA_OK;
 import static com.basp.trabajo_al_minuto.web.model.UtilWeb.formatDate;
@@ -36,6 +36,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 
 /**
  *
@@ -54,6 +56,7 @@ public class DetalleOfertaView extends ComponenteWeb implements Serializable {
     private List<PerfilHasPrueba> pruebasFlitradas;
     private Usuario usuariologin;
     private UsuarioHasOferta ofertAplicada;
+    private StreamedContent streamedContent;
 
     @PostConstruct
     public void init() {
@@ -121,8 +124,8 @@ public class DetalleOfertaView extends ComponenteWeb implements Serializable {
 
     public void onRowSelectVerPruebas(SelectEvent event) {
         try {
-            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("pruebaId", ((Prueba) event.getObject()).getPruebaId());
-            FacesContext.getCurrentInstance().getExternalContext().redirect(DETALLE_OFERTA_PAGE);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("pruebaId", ((PerfilHasPrueba) event.getObject()).getPrueba().getPruebaId());
+            FacesContext.getCurrentInstance().getExternalContext().redirect(VER_DETALLE_PRUEBA_PAGE);
         } catch (IOException ex) {
             Logger.getLogger(DetalleOfertaView.class.getName()).log(Level.SEVERE, "onRowSelectVerPruebas", ex);
         }
@@ -154,6 +157,30 @@ public class DetalleOfertaView extends ComponenteWeb implements Serializable {
             return formatDateTime(LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault()));
         }
         return "";
+    }
+
+    public void downloadReporteCandidatosEvaluados() {
+        try {
+            streamedContent = null;
+            List<UsuarioHasOferta> uho = usuarioEjb.getUsuariosByOferta(ofertaSeleccionada.getOfertaId());
+            Integer cant = 0;
+            for (UsuarioHasOferta o : uho) {
+                if (o.getEstado().getCatalogoId() == 12L) {
+                    cant++;
+                }
+            }
+            if (cant > 0) {
+                streamedContent = new DefaultStreamedContent(ofertaEjb.getReporteDetalleEvaluados(ofertaSeleccionada.getPerfil().getPerfilId(), cant));
+            } else {
+                message = webMessage(NO_EVALUADOS);
+            }
+        } catch (BusinessException ex) {
+            Logger.getLogger(DetalleOfertaView.class.getName()).log(Level.SEVERE, ex.developerException());
+        } finally {
+            if (message != null) {
+                FacesContext.getCurrentInstance().addMessage(null, message);
+            }
+        }
     }
 
 //    @Getter and Setter
@@ -211,6 +238,14 @@ public class DetalleOfertaView extends ComponenteWeb implements Serializable {
 
     public void setOfertAplicada(UsuarioHasOferta ofertAplicada) {
         this.ofertAplicada = ofertAplicada;
+    }
+
+    public StreamedContent getStreamedContent() {
+        return streamedContent;
+    }
+
+    public void setStreamedContent(StreamedContent streamedContent) {
+        this.streamedContent = streamedContent;
     }
 
 }

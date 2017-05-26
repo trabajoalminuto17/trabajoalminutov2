@@ -146,7 +146,7 @@ public class DetallePruebaView extends ComponenteWeb implements Serializable {
         pe.setPruebaId(p.getId());
         pe.setPorcentajeMinimo(p.getPorcentaje());
         pe.setLimiteTiempo(p.getTiempo());
-        pe.setPreguntaPlantillaList(setPreguntasPlantilla(p));
+        pe.setPreguntaPlantillaList(setPreguntasPlantilla(p, pe));
         pe.setEmpresaEmpresaId(new Empresa(p.getEmpresa()));
         pe.setEstado(p.getEstado());
         return pe;
@@ -164,7 +164,7 @@ public class DetallePruebaView extends ComponenteWeb implements Serializable {
         return preguntas;
     }
 
-    private List<PreguntaPlantilla> setPreguntasPlantilla(PruebaEmpresa p) {
+    private List<PreguntaPlantilla> setPreguntasPlantilla(PruebaEmpresa p, PruebaPlantilla pp) {
         List<PreguntaPlantilla> preguntas = new ArrayList();
         for (PreguntaEmpresa pregunta : p.getPreguntas()) {
             if (validarPreguntaNull(pregunta)) {
@@ -172,8 +172,8 @@ public class DetallePruebaView extends ComponenteWeb implements Serializable {
                     PreguntaPlantilla pe = new PreguntaPlantilla();
                     pe.setEnunciado(pregunta.getEnunciado());
                     pe.setPreguntaId(pregunta.getId());
-                    pe.setOpcionPlantillaList(setOpcionesPlantilla(pregunta));
-                    pe.setPruebaPlantillaPruebaId(new PruebaPlantilla(p.getId()));
+                    pe.setOpcionPlantillaList(setOpcionesPlantilla(pregunta, pe));
+                    pe.setPruebaPlantillaPruebaId(pp);
                     preguntas.add(pe);
                 } else {
                     message = webMessage(QUESTION_REPEAT);
@@ -197,14 +197,14 @@ public class DetallePruebaView extends ComponenteWeb implements Serializable {
         return opciones;
     }
 
-    private List<OpcionPlantilla> setOpcionesPlantilla(PreguntaEmpresa p) {
+    private List<OpcionPlantilla> setOpcionesPlantilla(PreguntaEmpresa p, PreguntaPlantilla pp) {
         List<OpcionPlantilla> opciones = new ArrayList();
         for (OpcionEmpresa o : p.getOpciones()) {
             OpcionPlantilla oe = new OpcionPlantilla();
             oe.setEnunciado(o.getEnunciado());
             oe.setCorrecta(o.getCorrecta());
             oe.setOpcionId(o.getId());
-            oe.setPreguntaPlantillaPreguntaId(new PreguntaPlantilla(p.getId()));
+            oe.setPreguntaPlantillaPreguntaId(pp);
             opciones.add(oe);
         }
         return opciones;

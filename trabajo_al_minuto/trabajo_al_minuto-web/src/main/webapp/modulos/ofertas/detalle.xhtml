@@ -122,8 +122,20 @@
                         </h:panelGroup>
                         <h:panelGroup rendered="#{detalleOfertaView.usuariologin.rol.rolId ne 3}">
                             <div class="EmptyBox80"/>
-                            <h4 class="Fs15 gray DispBlock FontBold">Candidatos</h4>
-                            <h5 class="Fs13 gray DispBlock FontLight">A continuación podrá ver el listado de los usuarios postulados.</h5>
+                            <div class="Container100">
+                                <div class="Container60">
+                                    <h4 class="Fs15 gray DispBlock FontBold">Candidatos</h4>
+                                    <h5 class="Fs13 gray DispBlock FontLight">A continuación podrá ver el listado de los usuarios postulados.</h5>
+                                </div>
+                                <div class="Container40 Fright MarTop20">
+                                    <h:commandLink  class="Fs14 DispBlock blue Underline" immediate="true"
+                                                    actionListener="#{detalleOfertaView.downloadReporteCandidatosEvaluados}">
+                                        <i class="fa fa-download-blue"></i>
+                                        <p:fileDownload value="#{detalleOfertaView.streamedContent}" rendered="#{not empty detalleOfertaView.streamedContent}"/>
+                                        Informe detallado de candidatos evaluados
+                                    </h:commandLink>   
+                                </div>
+                            </div>
                             <div class="Seperator"></div>
                             <div class="Container100 Responsive MarTop10">
                                 <p:dataTable id="dtofertasusuario" var="ofertausuario" value="#{detalleOfertaView.usuarioHasOfertaByOferta}"  widgetVar="wv_dtofertasusuario"

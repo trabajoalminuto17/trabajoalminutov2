@@ -43,6 +43,7 @@ public enum MensajeWeb {
     CITACION_RECHAZADA_NOT(ERROR_MESSAGE, "No se ha podido rechazar la citacion, ".concat(INTENTE_DE_NUEVO_MESSAGE), FacesMessage.SEVERITY_ERROR),
     CITACION_RECHAZADA(ALERTA_MESSAGE, "El candidato ha sido rechazado, no es posible ver el detalle de esté!", FacesMessage.SEVERITY_WARN),
     SALIR_NOT(ALERTA_MESSAGE, "Se encuentra presentando una prueba, debe finalizarla para poder salir!", FacesMessage.SEVERITY_WARN),
+    NO_EVALUADOS(ALERTA_MESSAGE, "Aún no hay evaluados para esta oferta!", FacesMessage.SEVERITY_WARN),
     PERFIL_NOT(ALERTA_MESSAGE, "Se encuentra presentando una prueba, debe finalizarla para poder ir al perfil!", FacesMessage.SEVERITY_WARN),
     USUARIO_YA_EXISTE(ERROR_MESSAGE, "El Email ingresado ya se encuentra registrado", FacesMessage.SEVERITY_ERROR),
     ARCHIVO_OK(EXITO_MESSAGE, "El archivo ha sido cargado correctamente.", FacesMessage.SEVERITY_INFO),
@@ -51,7 +52,7 @@ public enum MensajeWeb {
     SIN_PRUEBAS(ALERTA_MESSAGE, "La oferta no tiene pruebas asignadas.", FacesMessage.SEVERITY_WARN),
     PRUEBA_NO_ACTIVADA(ERROR_MESSAGE, "Se presentò un error al activar prueba.", FacesMessage.SEVERITY_ERROR),
     USUARIO_EN_PRUEBAS(ALERTA_MESSAGE, "El usuario se encuentra en pruebas.", FacesMessage.SEVERITY_WARN);
-    
+
     private final String TITULO;
     private final String DESCRIPCION;
     private final Severity SEVERITY;
